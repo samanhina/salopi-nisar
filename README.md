@@ -28,6 +28,8 @@ Put granules in `data/indus/` and `data/mirzachul/`.
 `processing/phase_theory.py` – SALOPI soil physics at 1.257 GHz with a Bragg (SPM) surface model: salt crust shifts HH–VV phase by **+4…+9°**, moisture alone by **−0.2°**; salt explains 74% of phase variance.
 `processing/rann_test.py` – natural experiment on real NISAR quad-pol scenes: Great Rann salt flat vs Thar sand dunes (zones by geography, bare pixels only). Salt flat sits **+9°, +14°, +5°** above sand on all three dates, while NISAR SME2 says it is *drier*; phase alone separates the two with **77–90% accuracy** (AUC 0.75–0.95). Figures and numbers in `results/`.
 
+**Global-mode check:** the risk index puts 35% of the Mirzachul (Hungry Steppe) zone in the top-risk class vs 13% scene-wide (2.6×); in Syrdarya region 99.1% of irrigated land was rated slightly-to-moderately saline (MAWR 2003, in JIRCAS Working Report 88).
+
 ## Method notes and honest limits
 - Complex HH·VV* is averaged over 10×10 pixels **before** taking the angle (standard multilook phase).
 - Provisional scenes carry a constant HH–VV phase offset (+68° Jun/Jul, −91° Oct); phase is measured **relative to dry Thar sand dunes** (natural target, ε″ ≈ 0).

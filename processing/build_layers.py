@@ -56,6 +56,7 @@ PAL = {
     "moist": _LSC.from_list("moist", ["#F7F4D5", "#839958", "#105666", "#0A3323"]),
     "risk":  _LSC.from_list("risk", ["#F2D4CE", "#D3968C", "#7A3A33"]),
     "salt":  _LSC.from_list("salt", ["#9C4F45", "#9C4F45"]),
+    "sig":   _LSC.from_list("sig", ["#E4572E", "#E4572E"]),
 }
 
 
@@ -189,21 +190,21 @@ def build(key):
         R = np.clip((hh + 25) / 25, 0, 1); G = np.clip((hv + 32) / 22, 0, 1); B = np.clip((hh - hv - 3) / 12, 0, 1)
         rgb = np.dstack([R, G, B, np.isfinite(hh)])
         to_png(rgb, f"{od}/RGB_{d}.png")
-        to_png(colorize(hv, "veg", -32, -10), f"{od}/HV_{d}.png")
-        to_png(colorize(L["SM"], "moist", 0.02, 0.40), f"{od}/SM_{d}.png")
+        to_png(colorize(hv, "gray", -32, -10), f"{od}/HV_{d}.png")
+        to_png(colorize(L["SM"], "viridis", 0.02, 0.40), f"{od}/SM_{d}.png")
         if d != first:
-            to_png(colorize(hv - per["pic"][first]["HV"], "div", -6, 6), f"{od}/dHV_{d}.png")
-            to_png(colorize(hh - per["pic"][first]["HH"], "div", -6, 6), f"{od}/dHH_{d}.png")
+            to_png(colorize(hv - per["pic"][first]["HV"], "RdBu_r", -6, 6), f"{od}/dHV_{d}.png")
+            to_png(colorize(hh - per["pic"][first]["HH"], "RdBu_r", -6, 6), f"{od}/dHH_{d}.png")
         if "PHASE" in L:
-            to_png(colorize(L["PHASE"], "div", -25, 25), f"{od}/PHASE_{d}.png")
+            to_png(colorize(L["PHASE"], "RdBu_r", -25, 25), f"{od}/PHASE_{d}.png")
         st = meta["stats"].setdefault(d, {})
         for k in ("HH", "HV", "VV", "SM", "PHASE"):
             if k in L:
                 st[f"{k}_median"] = round(float(np.nanmedian(L[k])), 3)
-    to_png(colorize(np.where(per["pic"][first]["RISK"] >= 0.75, per["pic"][first]["RISK"], np.nan), "risk", 0.75, 1.0), f"{od}/RISK.png")
+    to_png(colorize(np.where(per["pic"][first]["RISK"] >= 0.70, per["pic"][first]["RISK"], np.nan), "magma_r", 0.70, 1.0), f"{od}/RISK.png")
     if "SALT" in per["pic"][first]:
         sg = per["pic"][first]["SALT"]
-        to_png(colorize(np.where(sg >= 0.99, 1.0, np.nan), "salt", 0.0, 1.0), f"{od}/SALT.png")   # shift on EVERY date
+        to_png(colorize(np.where(sg >= 0.99, 1.0, np.nan), "sig", 0.0, 1.0), f"{od}/SALT.png")   # shift on EVERY date
         meta["layers"] = ["RGB", "HV", "dHV", "dHH", "SM", "PHASE", "SALT"]
     else:
         meta["layers"] = ["RGB", "HV", "dHV", "dHH", "SM", "RISK"]

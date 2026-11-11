@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SALOPI × NISAR</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..900,0..100,0..1;1,9..144,400..900,0..100,0..1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>/* Leaflet 1.9.4 (BSD-2) */
 /* required styles */
 
@@ -670,222 +670,271 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	}
 </style>
 <style>
-/* Palette: Dark green #0A3323 · Moss green #839958 · Beige #F7F4D5 · Rosy brown #D3968C · Midnight green #105666 */
 :root{
-  --bg:#F7F4D5; --card:rgba(251,249,232,.94); --card-solid:#FBF9E8; --ink:#0A3323; --muted:#4F6B4A;
-  --line:rgba(10,51,35,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#105666;
-  --map:#E9E5C4; --shadow:0 10px 30px rgba(10,51,35,.18);
+  --bg:#EEF1F4; --panel:#FFFFFF; --panel-2:#F6F8FA; --ink:#0F1A2A; --muted:#556274; --faint:#8A96A6;
+  --line:#D5DBE2; --accent:#1D5FB0; --accent-soft:#E3ECF8; --alert:#D2461F; --ok:#2E7D5B;
+  --map:#DCE1E7; --shadow:0 1px 2px rgba(15,26,42,.08),0 6px 18px rgba(15,26,42,.08);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0A3323; --card:rgba(10,51,35,.92); --card-solid:#0C3A28; --ink:#F7F4D5; --muted:#B5C49A;
-    --line:rgba(247,244,213,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#3B8A98;
-    --map:#072519; --shadow:0 10px 30px rgba(0,0,0,.45);
+    --bg:#0A0E13; --panel:#121820; --panel-2:#0E141B; --ink:#E5EAF0; --muted:#97A3B3; --faint:#667385;
+    --line:#243041; --accent:#5B9BE6; --accent-soft:#16253A; --alert:#F0703F; --ok:#5FBF92;
+    --map:#0C1117; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0A3323; --card:rgba(10,51,35,.92); --card-solid:#0C3A28; --ink:#F7F4D5; --muted:#B5C49A;
-  --line:rgba(247,244,213,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#3B8A98;
-  --map:#072519; --shadow:0 10px 30px rgba(0,0,0,.45);
+  --bg:#0A0E13; --panel:#121820; --panel-2:#0E141B; --ink:#E5EAF0; --muted:#97A3B3; --faint:#667385;
+  --line:#243041; --accent:#5B9BE6; --accent-soft:#16253A; --alert:#F0703F; --ok:#5FBF92;
+  --map:#0C1117; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden}
-body{background:var(--bg);color:var(--ink);font:400 15px/1.5 'Outfit',system-ui,sans-serif}
-.serif{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 100,"WONK" 1}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.5 'IBM Plex Sans',system-ui,sans-serif}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 #map{position:fixed;inset:0;background:var(--map)}
 .leaflet-container{font:inherit;background:var(--map)}
-.leaflet-top.leaflet-right{top:96px;right:10px}
-.leaflet-control-zoom{border:0!important;box-shadow:var(--shadow)!important;border-radius:14px!important;overflow:hidden}
-.leaflet-control-zoom a{background:var(--card-solid)!important;color:var(--ink)!important;border-color:var(--line)!important}
-.leaflet-control-attribution{background:var(--card)!important;color:var(--muted)!important;border-radius:10px 0 0 0}
-.leaflet-control-attribution a{color:var(--mid)!important}
-.card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.leaflet-top.leaflet-right{top:64px;right:10px}
+.leaflet-bar{border:1px solid var(--line)!important;box-shadow:var(--shadow)!important;border-radius:6px!important}
+.leaflet-bar a{background:var(--panel)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.leaflet-control-attribution{background:var(--panel)!important;color:var(--faint)!important;font-size:11px}
+.leaflet-control-attribution a{color:var(--accent)!important}
+.leaflet-control-scale-line{background:var(--panel);color:var(--ink);border-color:var(--ink);font:11px 'IBM Plex Mono'}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
+.lbl{font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 
-/* brand */
-#brand{position:fixed;left:20px;top:18px;z-index:1000;padding:14px 22px 14px 20px;display:flex;align-items:center;gap:14px}
-#brand h1{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.5px;font-variation-settings:"SOFT" 100,"WONK" 1,"opsz" 144}
-#brand h1 i{font-weight:400;color:var(--rose);font-style:italic;margin:0 2px}
-#brand .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);line-height:1.35;border-left:1px solid var(--line);padding-left:14px}
+/* top bar */
+#top{position:fixed;left:12px;right:12px;top:12px;z-index:1000;display:flex;align-items:stretch;gap:10px;pointer-events:none}
+#top > *{pointer-events:auto}
+#brand{display:flex;align-items:center;gap:12px;padding:8px 14px}
+#brand .logo{width:28px;height:28px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font:600 15px 'IBM Plex Mono'}
+#brand h1{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+#brand h1 span{color:var(--faint);font-weight:400;margin:0 4px}
+#brand .sub{font-size:11.5px;color:var(--muted);line-height:1.2}
+#top .sp{flex:1}
+#regions{display:flex;padding:3px;gap:2px}
+#regions button{border:0;background:transparent;color:var(--muted);font:500 13px 'IBM Plex Sans';padding:6px 12px;border-radius:5px;cursor:pointer;text-align:left;line-height:1.15}
+#regions button small{display:block;font:400 10px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+#regions button.on{background:var(--accent-soft);color:var(--accent)}
+#regions button.on small{color:var(--accent)}
+#tourBtn{border:0;background:var(--accent);color:#fff;font:600 13px 'IBM Plex Sans';padding:0 16px;border-radius:8px;cursor:pointer;box-shadow:var(--shadow)}
 
-/* region switch */
-#regions{position:fixed;right:20px;top:18px;z-index:1000;padding:6px;display:flex;gap:4px}
-#regions button{border:0;background:transparent;color:var(--ink);font:500 14px 'Outfit';padding:10px 16px;border-radius:16px;cursor:pointer;text-align:left;line-height:1.15}
-#regions button small{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-#regions button.on{background:var(--ink);color:var(--bg)}
-#regions button.on small{color:inherit;opacity:.7}
-
-/* side panel */
-#panel{position:fixed;left:20px;top:104px;bottom:120px;width:370px;z-index:1000;display:flex;flex-direction:column;overflow:hidden}
-#tabs{display:flex;gap:2px;padding:8px 8px 0}
-#tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:500 13.5px 'Outfit';padding:9px 4px;border-radius:12px 12px 0 0;cursor:pointer;border-bottom:2px solid transparent}
-#tabs button.on{color:var(--ink);border-bottom-color:var(--rose)}
-.pane{display:none;overflow-y:auto;padding:16px 20px 22px;flex:1}
+/* panel */
+#panel{position:fixed;left:12px;top:68px;bottom:96px;width:356px;z-index:1000;display:flex;flex-direction:column;overflow:hidden}
+#tabs{display:flex;border-bottom:1px solid var(--line);padding:0 6px}
+#tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:500 13px 'IBM Plex Sans';padding:11px 2px 9px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+#tabs button.on{color:var(--ink);border-bottom-color:var(--accent)}
+.pane{display:none;overflow-y:auto;padding:14px 16px 20px;flex:1}
 .pane.on{display:block}
-.mode{background:#105666;color:#F7F4D5;border-radius:16px;padding:14px 16px;margin-bottom:14px}
-.mode .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.75}
-.mode b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:22px;line-height:1.15;margin:2px 0 4px;font-variation-settings:"SOFT" 100,"WONK" 1}
-.mode p{margin:0;font-size:13.5px;opacity:.92}
-.layer{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:14px;cursor:pointer;border:1px solid transparent}
-.layer:hover{background:rgba(131,153,88,.14)}
-.layer.on{background:rgba(211,150,140,.22);border-color:rgba(211,150,140,.6)}
-.layer input{display:none}
-.layer .dot{flex:none;width:14px;height:14px;border-radius:50%;margin-top:4px;border:2px solid var(--moss)}
-.layer.on .dot{background:var(--rose);border-color:var(--rose)}
-.layer b{font-weight:500}
-.layer small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4}
-h3{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:20px;margin:18px 0 8px;font-variation-settings:"SOFT" 100,"WONK" 1}
+.mode{border:1px solid var(--line);background:var(--panel-2);border-radius:6px;padding:10px 12px;margin-bottom:12px}
+.mode b{display:block;font-size:14.5px;margin:2px 0}
+.mode p{margin:0;color:var(--muted);font-size:12.5px}
+.group{margin:14px 0 6px}
+.layer{display:grid;grid-template-columns:16px 1fr;gap:10px;padding:8px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+.layer:hover{background:var(--panel-2)}
+.layer.on{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.layer .rb{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--faint);margin-top:3px}
+.layer.on .rb{border:4px solid var(--accent)}
+.layer b{font-weight:500;font-size:13.5px}
+.layer small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+h3{font-size:15px;font-weight:600;margin:16px 0 6px}
 h3:first-child{margin-top:0}
-.pane p,.pane li{color:var(--muted);font-size:14px}
-.pane p b,.pane li b{color:var(--ink)}
-.pane img{width:100%;border-radius:14px;border:1px solid var(--line);background:#fff}
-.big{display:flex;gap:10px;margin:10px 0}
-.big div{flex:1;background:rgba(131,153,88,.16);border-radius:14px;padding:10px 12px}
-.big b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:28px;line-height:1.05;color:var(--ink)}
-.big span{font-size:12px;color:var(--muted)}
-.hint{color:var(--muted);font-size:14px}
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
-td,th{padding:6px 4px;text-align:right;border-bottom:1px solid var(--line)}
-th{font-weight:500;color:var(--muted)}
-th:first-child,td:first-child{text-align:left}
-.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;margin:2px 4px 2px 0}
-.verdict{margin-top:10px;font-size:14px;line-height:1.55}
-.theme{display:flex;gap:6px;margin-top:14px}
-.theme button{border:1px solid var(--line);background:transparent;color:var(--ink);font:13px 'Outfit';padding:6px 12px;border-radius:99px;cursor:pointer}
-.theme button.on{background:var(--ink);color:var(--bg)}
+.pane p,.pane li{color:var(--muted);font-size:13px}
+.pane p b,.pane li b{color:var(--ink);font-weight:600}
+.pane ul{padding-left:18px}
+.pane img{width:100%;border:1px solid var(--line);border-radius:6px;background:#fff}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.kpi div{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--panel-2)}
+.kpi b{display:block;font:500 20px 'IBM Plex Mono';color:var(--ink);line-height:1.2}
+.kpi span{font-size:11.5px;color:var(--muted)}
+.hint{color:var(--muted);font-size:13px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+td,th{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line)}
+td{font-family:'IBM Plex Mono',monospace}
+th{font-weight:500;color:var(--faint);font-size:11px;font-family:'IBM Plex Mono'}
+th:first-child,td:first-child{text-align:left;font-family:'IBM Plex Sans'}
+.tag{display:inline-block;padding:1px 7px;border-radius:4px;font:500 11px 'IBM Plex Mono';margin-right:6px}
+.verdict{margin-top:10px;font-size:13px;line-height:1.55;color:var(--ink)}
+.verdict p{margin:6px 0;color:var(--ink)}
+.theme{display:flex;gap:4px;margin-top:12px}
+.theme button{border:1px solid var(--line);background:transparent;color:var(--muted);font:12px 'IBM Plex Sans';padding:4px 10px;border-radius:5px;cursor:pointer}
+.theme button.on{background:var(--accent-soft);color:var(--accent);border-color:transparent}
+.src{font-size:11.5px!important;color:var(--faint)!important}
+.src a{color:var(--accent)}
 
 /* timeline */
-#timeline{position:fixed;left:410px;right:20px;bottom:24px;z-index:1000;padding:12px 18px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
-#dates{display:flex;gap:6px}
-#dates button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:16px;padding:6px 14px;cursor:pointer;text-align:center;line-height:1.05}
-#dates button b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:24px;font-variation-settings:"SOFT" 100,"WONK" 1}
-#dates button small{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
-#dates button.on{background:var(--rose);border-color:var(--rose);color:var(--rose-ink)}
-#dates button.on small{color:var(--rose-ink)}
-#dates button:disabled{opacity:.35;cursor:default}
+#timeline{position:fixed;left:380px;right:12px;bottom:28px;z-index:1000;padding:8px 12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#dates{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+#dates button{border:0;border-right:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;cursor:pointer;font:500 12.5px 'IBM Plex Mono'}
+#dates button:last-child{border-right:0}
+#dates button.on{background:var(--accent);color:#fff}
+#dates button:disabled{color:var(--faint);cursor:default;background:var(--panel-2)}
+#cmp{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 12.5px 'IBM Plex Sans';padding:6px 12px;border-radius:6px;cursor:pointer}
+#cmp.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+#cmp:disabled{opacity:.4;cursor:default}
 #legend{flex:1;min-width:200px}
-#legend .t{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-#legend .bar{height:10px;border-radius:99px}
-#legend .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:2px}
-.op{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
-input[type=range]{accent-color:var(--rose);width:110px}
+#legend .bar{height:8px;border-radius:2px;margin-top:3px}
+#legend .ticks{display:flex;justify-content:space-between;font:11px 'IBM Plex Mono';color:var(--muted);margin-top:2px}
+.op{display:flex;align-items:center;gap:8px}
+input[type=range]{accent-color:var(--accent);width:96px}
+#coords{position:fixed;left:380px;bottom:6px;z-index:1000;font:11px 'IBM Plex Mono';color:var(--muted);background:var(--panel);padding:1px 8px;border-radius:4px;border:1px solid var(--line)}
 
+/* compare */
+#divider{position:absolute;top:0;bottom:0;width:0;z-index:650;display:none;pointer-events:none}
+#divider .ln{position:absolute;top:0;bottom:0;left:-1px;width:2px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.35)}
+#divider .h{position:absolute;top:50%;left:-17px;width:34px;height:34px;margin-top:-17px;border-radius:50%;background:#fff;color:#0F1A2A;display:grid;place-items:center;font:600 13px 'IBM Plex Mono';box-shadow:0 2px 8px rgba(0,0,0,.35);pointer-events:auto;cursor:ew-resize;touch-action:none}
+#divider .dl{position:absolute;top:76px;font:500 11px 'IBM Plex Mono';background:rgba(15,26,42,.85);color:#fff;padding:2px 7px;border-radius:4px;white-space:nowrap}
+#divider .dl.l{right:10px}#divider .dl.r{left:10px}
+
+/* tour */
+#tour{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;width:min(560px,calc(100% - 24px));z-index:1100;display:none;padding:14px 16px;border-left:3px solid var(--accent)}
+#tour .n{font:500 11px 'IBM Plex Mono';color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+#tour h4{margin:2px 0 4px;font-size:16px}
+#tour p{margin:0;color:var(--muted);font-size:13.5px}
+#tour p b{color:var(--ink)}
+#tour .nav{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+#tour button{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 13px 'IBM Plex Sans';padding:6px 14px;border-radius:6px;cursor:pointer}
+#tour button.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+@media (min-width:861px){ #tour{left:calc(50% + 184px)} }
 @media (max-width:860px){
-  #brand{left:12px;top:12px;padding:10px 14px}
-  #brand h1{font-size:24px}
-  #brand .tag{display:none}
-  #regions{left:12px;right:12px;top:auto;bottom:calc(46vh + 92px);justify-content:center}
-  #regions button{padding:8px 12px;font-size:13px}
-  #panel{left:0;right:0;bottom:0;top:auto;width:auto;height:46vh;border-radius:22px 22px 0 0}
-  #timeline{left:12px;right:12px;bottom:calc(46vh + 12px);padding:8px 12px;gap:10px}
-  #dates button{padding:4px 10px}
-  #dates button b{font-size:18px}
-  .op{display:none}
-  #legend{min-width:120px}
+  #brand .sub,#regions button small{display:none}
+  #brand{padding:6px 10px}#brand h1{font-size:14px}
+  #regions button{padding:6px 9px;font-size:12.5px}
+  #tourBtn{padding:0 10px;font-size:12.5px}
+  #panel{left:0;right:0;bottom:0;top:auto;width:auto;height:44vh;border-radius:10px 10px 0 0}
+  #timeline{left:8px;right:8px;bottom:calc(44vh + 8px);gap:8px;padding:6px 8px}
+  .op,#coords{display:none}
+  #legend{min-width:110px}
+  #tour{bottom:calc(44vh + 64px);left:50%}
 }
 </style>
 </head>
 <body>
 <div id="map"></div>
 
-<div id="brand" class="card">
-  <h1>SALOPI<i>×</i>NISAR</h1>
-  <div class="tag">Listening for salt<br>in radar echoes</div>
+<div id="top">
+  <div id="brand" class="box">
+    <div class="logo">ε″</div>
+    <div><h1>SALOPI<span>×</span>NISAR</h1><div class="sub">Soil salinity from L-band SAR polarimetry</div></div>
+  </div>
+  <div class="sp"></div>
+  <div id="regions" class="box"></div>
+  <button id="tourBtn">▶ Tour</button>
 </div>
 
-<div id="regions" class="card"></div>
-
-<div id="panel" class="card">
+<div id="panel" class="box">
   <div id="tabs">
     <button data-p="layers" class="on">Layers</button>
-    <button data-p="field">Field card</button>
+    <button data-p="field">Inspect</button>
     <button data-p="evidence">Evidence</button>
-    <button data-p="about">About</button>
+    <button data-p="about">Method</button>
   </div>
   <div class="pane on" id="p-layers">
     <div id="modeBox"></div>
     <div id="layers"></div>
   </div>
-  <div class="pane" id="p-field">
-    <div id="probe"><h3>Field card</h3><p class="hint">Tap anywhere on the radar image to see how that spot changed across the season.</p></div>
-  </div>
+  <div class="pane" id="p-field"><div id="probe"></div></div>
   <div class="pane" id="p-evidence">
-    <h3>Is it really salt?</h3>
-    <div class="big"><div><b>+4…+9°</b><span>model: salt crust</span></div><div><b>≈ 0°</b><span>model: moisture only</span></div></div>
-    <p><b>1 · Physics.</b> Our SALOPI soil model at NISAR's 1.26 GHz (Stogryn saline water + Dobson mixing + Bragg surface scattering). Salt explains <b>74%</b> of the HH–VV phase variance, moisture only <b>13%</b>.</p>
-    <img src="phase_model.png" alt="Model map of HH–VV phase over soil moisture and salt content">
-    <p style="margin-top:16px"><b>2 · Real NISAR data.</b> A natural experiment: the Great Rann of Kutch salt flat against non-saline Thar sand dunes. Zones are set by geography, only bare ground is used.</p>
-    <div class="big"><div><b>+5…+14°</b><span>salt flat vs sand, every date</span></div><div><b>77–90%</b><span>accuracy, phase alone</span></div></div>
-    <img src="evidence.png" alt="Salt flat phase shift on three dates and phase-only accuracy">
+    <h3>Precision mode · is the phase signal salt?</h3>
+    <div class="kpi"><div><b>+4…+9°</b><span>model, salt crust vs dry sand</span></div><div><b>−0.2°</b><span>model, moisture 0.05→0.35</span></div></div>
+    <p><b>Forward model.</b> SALOPI soil dielectric model at 1.257 GHz (Stogryn saline water + Dobson mixing) with first-order Bragg (SPM) backscatter. Roughness cancels in the SPM co-pol phase. Over 20 000 random soils, log-salinity explains <b>74%</b> of HH–VV phase variance, moisture <b>13%</b>, incidence angle <b>6%</b>.</p>
+    <img src="phase_model.png" alt="Modelled HH–VV phase over soil moisture and salt content">
+    <p style="margin-top:14px"><b>Natural experiment on NISAR quad-pol data.</b> Great Rann of Kutch salt flat vs non-saline Thar dunes; zones defined geographically; bare-surface pixels only (HV−HH &lt; −5 dB, above noise).</p>
+    <div class="kpi"><div><b>+5…+14°</b><span>salt flat vs sand, all 3 dates</span></div><div><b>0.77–0.90</b><span>balanced accuracy, phase only</span></div></div>
+    <img src="evidence.png" alt="Observed salt-flat phase shift on three dates and phase-only separability">
     <ul>
-      <li>Same sign and size as the model predicted.</li>
-      <li><b>Not moisture:</b> NISAR's own soil-moisture product says the salt flat is <i>drier</i> than the dunes.</li>
-      <li><b>Control</b> (Khadir/Bela islands) flips sign between dates: no stable shift.</li>
+      <li>Sign and magnitude agree with the model.</li>
+      <li>Not moisture: NISAR SME2 retrieves the salt flat as <i>drier</i> than the dunes.</li>
+      <li>Control (Khadir/Bela islands): sign changes between dates.</li>
     </ul>
+    <h3>Global mode · does the risk index point at known saline land?</h3>
+    <div class="kpi"><div><b>35%</b><span>Mirzachul land in top-risk class</span></div><div><b>13%</b><span>same class, whole scene</span></div></div>
+    <p>The index flags the Mirzachul (Hungry Steppe) irrigation zone <b>2.6×</b> more often than the scene average. In Syrdarya region 99.1% of irrigated land was rated slightly-to-moderately saline (MAWR 2003, cited in JIRCAS Working Report 88).</p>
+    <p class="src">Source: <a href="https://jircas.repo.nii.ac.jp/record/2000230/files/jircas_working_report88-_9-21.pdf" target="_blank" rel="noopener">JIRCAS Working Report 88</a></p>
   </div>
   <div class="pane" id="p-about">
-    <h3>Why radar can hear salt</h3>
-    <p>Salt dissolved in soil water adds <b>ionic conductivity</b>, the imaginary part of permittivity, <b>ε″</b>. It changes the <b>phase between HH and VV</b> echoes far more than water does, so phase separates salt from moisture where amplitude cannot.</p>
-    <h3>Two modes</h3>
+    <h3>Physical basis</h3>
+    <p>Dissolved salt adds ionic conductivity σ to soil water, raising the imaginary permittivity <span class="mono">ε″ = σ/(2πfε₀)</span>. A complex ε rotates the phase between HH and VV backscatter; water mainly raises ε′, which changes amplitude but hardly the phase. Phase therefore separates salt from moisture where amplitude cannot.</p>
+    <h3>Processing</h3>
     <ul>
-      <li><b>Global</b> (any dual-pol scene, HH+HV): flags land that is <i>wet</i> yet <i>bare all season</i>, typical for saline groundwater and failing crops.</li>
-      <li><b>Precision</b> (quad-pol): the HH–VV phase, the direct dielectric fingerprint of salt.</li>
+      <li>NISAR L2 GCOV (20 m), 10×10 multilook → 200 m. Complex HH·VV* averaged before taking the angle.</li>
+      <li>Phase referenced to dry Thar dunes (ε″ ≈ 0) to remove the per-scene calibration offset of provisional products (+61° Jun/Jul, −96° Oct).</li>
+      <li>Risk = P(soil moisture) × (1 − P(season-max HV)), P = percentile within scene; open water removed.</li>
+      <li>Salt signature = bare surface with phase ≥ +5° on every available date (≥ 2 dates).</li>
     </ul>
-    <h3>Honest limits</h3>
+    <h3>Limitations</h3>
     <ul>
-      <li><b>Provisional</b> NISAR products. Each scene has a constant phase offset (+61° Jun/Jul, −96° Oct), so phase is measured relative to dry Thar sand (ε″ ≈ 0).</li>
-      <li>Surface roughness also nudges phase; the salt flat is smoother than dunes. Not yet controlled.</li>
-      <li>The risk layer is a <b>screening</b> tool; field ECe samples are needed to calibrate it.</li>
-      <li>L-band sees salt weakly. Our long-term goal: a P-band receiver CubeSat (SALOPI).</li>
+      <li>Provisional products; one quad-pol site.</li>
+      <li>Roughness differences (smooth crust vs dunes) not yet separated.</li>
+      <li>Risk is a screening index; calibration needs field ECe samples.</li>
+      <li>L-band sensitivity to salt is weak; the SALOPI concept targets P-band (250–380 MHz) signals of opportunity.</li>
     </ul>
-    <p>Data: NASA-ISRO NISAR L2 GCOV &amp; L3 SME2 (provisional), NASA Earthdata / ASF DAAC. Open-source Python + Leaflet. Team <b>ε″</b> · NASA Space Apps 2026.</p>
+    <p class="src">Data: NASA-ISRO NISAR L2 GCOV, L3 SME2 (provisional), NASA Earthdata / ASF DAAC. Code: MIT licence. Team ε″ · NASA Space Apps Challenge 2026.</p>
     <div class="theme" id="themeSeg"><button data-t="auto" class="on">Auto</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div>
   </div>
 </div>
 
-<div id="timeline" class="card">
-  <div id="dates"></div>
+<div id="timeline" class="box">
+  <div><div class="lbl">Acquisition</div><div id="dates" style="margin-top:3px"></div></div>
+  <button id="cmp" title="Compare first and selected date">⇆ Compare</button>
   <div id="legend"></div>
-  <label class="op">Opacity <input type="range" id="opacity" min="0" max="100" value="85"></label>
+  <label class="op"><span class="lbl">Opacity</span><input type="range" id="opacity" min="0" max="100" value="90"></label>
+</div>
+<div id="coords">—</div>
+
+<div id="tour" class="box">
+  <div class="n" id="tourN"></div><h4 id="tourT"></h4><p id="tourP"></p>
+  <div class="nav"><button id="tourX">Close</button><button id="tourB">Back</button><button id="tourF" class="pri">Next</button></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 const CUBE_STEP = 0.006;
-const DIV = "linear-gradient(90deg,#105666,#7FA9B0,#F7F4D5,#E2B5AC,#9C4F45)";
+const RDBU = "linear-gradient(90deg,#053061,#2166ac,#92c5de,#f7f7f7,#f4a582,#b2182b,#67001f)";
 const LAYER_INFO = {
-  RGB:  {name:"Radar colour composite", desc:"Red HH · green HV (plants) · blue HH−HV (bare, smooth ground)", dated:true},
-  HV:   {name:"Vegetation (HV)", desc:"Bright = crops and trees; dark = bare soil or water", dated:true,
-         legend:{t:"HV backscatter", grad:"linear-gradient(90deg,#0A3323,#F7F4D5)", ticks:["−32 dB","−21","−10 dB"]}},
-  dHV:  {name:"Change · vegetation", desc:"Teal = plants lost (harvest, crop failure); rose = growth", dated:true, skipFirst:true,
-         legend:{t:"ΔHV since first date", grad:DIV, ticks:["−6 dB","0","+6 dB"]}},
-  dHH:  {name:"Change · surface", desc:"Wetting, ploughing, flooding", dated:true, skipFirst:true,
-         legend:{t:"ΔHH since first date", grad:DIV, ticks:["−6 dB","0","+6 dB"]}},
-  SM:   {name:"Soil moisture", desc:"NISAR SME2, top soil water content", dated:true,
-         legend:{t:"Soil moisture", grad:"linear-gradient(90deg,#F7F4D5,#839958,#105666,#0A3323)", ticks:["0.02","0.21","0.40 m³/m³"]}},
-  RISK: {name:"Salinization risk", desc:"Wet but bare all season — the riskiest 25% of land", dated:false,
-         legend:{t:"Risk percentile", grad:"linear-gradient(90deg,#F2D4CE,#D3968C,#7A3A33)", ticks:["top 25%","top 12%","top 1%"]}},
-  PHASE:{name:"HH–VV phase", desc:"Relative to Thar sand (natural zero). Model: salt +4…+9°, moisture ≈ 0°", dated:true,
-         legend:{t:"HH–VV phase vs sand", grad:DIV, ticks:["−25°","0°","+25°"]}},
-  SALT: {name:"Salt signature", desc:"Bare ground with phase ≥ +5° on every date: salt, not a passing wet spell", dated:false,
-         legend:{t:"Salt signature", grad:"linear-gradient(90deg,#9C4F45,#9C4F45)", ticks:["detected on all dates",""]}},
+  RGB:  {g:"Backscatter", name:"Pauli-like RGB", desc:"R = HH, G = HV, B = HH−HV", dated:true, cmp:true},
+  HV:   {g:"Backscatter", name:"HV backscatter σ⁰", desc:"Volume scattering: vegetation", dated:true, cmp:true,
+         legend:{t:"σ⁰ HV", grad:"linear-gradient(90deg,#000,#fff)", ticks:["−32 dB","−21","−10 dB"]}},
+  dHV:  {g:"Change", name:"ΔHV since first date", desc:"Negative = vegetation loss (harvest, crop failure)", dated:true, skipFirst:true,
+         legend:{t:"ΔHV", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
+  dHH:  {g:"Change", name:"ΔHH since first date", desc:"Surface change: wetting, tillage, flooding", dated:true, skipFirst:true,
+         legend:{t:"ΔHH", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
+  SM:   {g:"Soil", name:"Soil moisture (SME2)", desc:"NISAR L3 product, 200 m", dated:true, cmp:true,
+         legend:{t:"mᵥ", grad:"linear-gradient(90deg,#440154,#3b528b,#21918c,#5ec962,#fde725)", ticks:["0.02","0.21","0.40 m³/m³"]}},
+  RISK: {g:"Salinity", name:"Salinization risk index", desc:"Wet yet bare all season; top 30% shown", dated:false,
+         legend:{t:"Risk percentile", grad:"linear-gradient(90deg,#fcfdbf,#fc8961,#b73779,#51127c,#000004)", ticks:["P70","P85","P100"]}},
+  PHASE:{g:"Salinity", name:"HH–VV phase difference", desc:"Referenced to dry Thar dunes", dated:true, cmp:true,
+         legend:{t:"φ(HH·VV*) − φ_sand", grad:RDBU, ticks:["−25°","0°","+25°"]}},
+  SALT: {g:"Salinity", name:"Salt signature", desc:"Bare surface, φ ≥ +5° on every date", dated:false,
+         legend:{t:"Salt signature", grad:"linear-gradient(90deg,#E4572E,#E4572E)", ticks:["detected on all dates",""]}},
 };
 const MODE_TEXT = {
-  precision:{t:"Precision mode", p:"Quad-pol scene: HH, HV, VH, VV and the complex HH·VV* term. The phase reveals the dielectric fingerprint of salt."},
-  global:{t:"Global mode", p:"Dual-pol scene (HH + HV), like most of NISAR's land coverage. Risk from soil moisture and season-long vegetation."},
+  precision:{t:"Precision mode · quad-pol", p:"HH, HV, VH, VV + complex HH·VV*. Phase-based salt detection."},
+  global:{t:"Global mode · dual-pol", p:"HH + HV + SME2 moisture. Change detection and salinization risk screening."},
 };
-const REGION_LABEL = {rann:["Rann of Kutch","precision"], mirzachul:["Mirzachul","global"]};
+const REGION_LABEL = {mirzachul:["Mirzachul, UZ","global · DH"], rann:["Rann of Kutch","precision · QP"]};
 
-let META, region, layer = "RGB", dateIdx = 2, overlay = null, cubes = {}, marker = null;
+const TOUR = [
+  {r:"mirzachul", l:"RGB", d:2, t:"NISAR over Uzbekistan", p:"An L-band radar scene from 13 Oct 2026 covering Tashkent, the Syrdarya valley and the <b>Mirzachul (Hungry Steppe)</b> irrigation zone. Green = vegetation, purple = bare smooth ground."},
+  {r:"mirzachul", l:"dHV", d:2, c:[40.45,68.6], z:10, t:"A season of change", p:"HV change June → October. <b>Blue</b> = vegetation lost: the cotton and wheat harvest. Bare soil after harvest is exactly when salt is easiest to see."},
+  {r:"mirzachul", l:"RISK", c:[40.55,68.55], z:10, t:"Where salt is likely", p:"Land that stays <b>wet</b> (NISAR soil moisture) but <b>bare</b> all season. <b>35%</b> of Mirzachul falls in the top-risk class vs 13% scene-wide. Syrdarya region: 99% of irrigated land is slightly-to-moderately saline."},
+  {r:"rann", l:"RGB", d:1, t:"Precision mode: Rann of Kutch", p:"A quad-pol scene over one of the world's largest salt flats (dark, centre) and the non-saline sand dunes of the Thar desert (north)."},
+  {r:"rann", l:"PHASE", d:1, c:[24.08,70.1], z:9, t:"The salt fingerprint", p:"HH–VV phase relative to the dunes. Our physics model predicts <b>+4…+9°</b> for a salt crust and ≈0° for wet soil. The salt flat reads <b>+5…+14°</b> on all three dates."},
+  {r:"rann", l:"SALT", c:[24.17,69.6], z:10, t:"Persistent salt signature", p:"Bare ground whose phase stays ≥ +5° on every date: not a passing rain, but a permanent dielectric property — salt."},
+  {tab:"evidence", t:"How sure are we?", p:"Phase alone separates salt flat from sand with <b>77–90%</b> accuracy, and the moisture product rules out water as the cause. Full evidence in the panel."},
+];
+
+let META, region, layer = "RGB", dateIdx = 2, overlay = null, before = null, cubes = {}, marker = null, cmpOn = false, swipeX = .5, tourI = -1;
 const $ = s => document.querySelector(s);
 const map = L.map("map", {zoomControl:false, preferCanvas:true});
 L.control.zoom({position:"topright"}).addTo(map);
+L.control.scale({position:"topright", imperial:false}).addTo(map);
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-  {maxZoom:17, attribution:"Basemap © Esri · Radar: NASA-ISRO NISAR"}).addTo(map);
+  {maxZoom:17, attribution:"Basemap © Esri · SAR: NASA-ISRO NISAR"}).addTo(map);
+map.createPane("before"); map.getPane("before").style.zIndex = 410;
 
 const fmt = d => new Date(d.slice(0,4)+"-"+d.slice(4,6)+"-"+d.slice(6));
-const day = d => fmt(d).getDate();
-const mon = d => fmt(d).toLocaleDateString("en-GB",{month:"short"});
-const fmtDate = d => `${day(d)} ${mon(d)}`;
+const fmtDate = d => fmt(d).toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
 
 function setTheme(t){
   if(t === "auto") document.documentElement.removeAttribute("data-theme");
@@ -902,45 +951,106 @@ function showTab(p){
 }
 document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => showTab(b.dataset.p));
 
+const emptyProbe = () => `<h3>Inspect a location</h3><p class="hint">Click the radar image to read σ⁰, soil moisture and phase for a ~600 m cell on every acquisition date.</p>`;
+
 async function init(){
   META = await (await fetch("data/meta.json")).json();
-  for(const k of Object.keys(META.regions)){
+  for(const k of ["mirzachul","rann"]){
     const b = document.createElement("button");
-    b.innerHTML = `${REGION_LABEL[k][0]}<small>${REGION_LABEL[k][1]} mode</small>`;
+    b.innerHTML = `${REGION_LABEL[k][0]}<small>${REGION_LABEL[k][1]}</small>`;
     b.dataset.k = k; b.onclick = () => selectRegion(k); $("#regions").appendChild(b);
   }
-  $("#opacity").oninput = e => overlay && overlay.setOpacity(e.target.value/100);
+  $("#opacity").oninput = e => { const o = e.target.value/100; overlay && overlay.setOpacity(o); before && before.setOpacity(o); };
+  $("#cmp").onclick = () => { cmpOn = !cmpOn; draw(); };
   map.on("click", e => probe(e.latlng));
+  map.on("mousemove", e => $("#coords").textContent = `${e.latlng.lat.toFixed(4)}° N  ${e.latlng.lng.toFixed(4)}° E`);
+  map.on("move zoom resize", clip);
+  setupDivider();
+  $("#tourBtn").onclick = () => tourGo(0);
+  $("#tourX").onclick = () => tourGo(-1);
+  $("#tourB").onclick = () => tourGo(Math.max(0, tourI-1));
+  $("#tourF").onclick = () => tourGo(tourI+1 < TOUR.length ? tourI+1 : -1);
   selectRegion("mirzachul");
 }
 
-function selectRegion(k){
+function fit(R){
+  const wide = innerWidth > 860;
+  map.fitBounds(R.bounds, {paddingTopLeft: wide ? [380, 70] : [0, 60], paddingBottomRight: wide ? [20, 100] : [0, innerHeight*.48]});
+}
+
+function selectRegion(k, noFit){
   region = k; const R = META.regions[k], m = MODE_TEXT[R.mode];
   document.querySelectorAll("#regions button").forEach(b => b.classList.toggle("on", b.dataset.k === k));
-  $("#modeBox").innerHTML = `<div class="mode"><div class="k">${m.t}</div><b>${R.title}</b><p>${m.p}</p></div>`;
+  $("#modeBox").innerHTML = `<div class="mode"><div class="lbl">${m.t}</div><b>${R.title}</b><p>${m.p}</p></div>`;
   if(!R.layers.includes(layer)) layer = "RGB";
-  $("#layers").innerHTML = R.layers.map(L_ => `<label class="layer ${L_===layer?"on":""}" data-l="${L_}"><span class="dot"></span><span><b>${LAYER_INFO[L_].name}</b><small>${LAYER_INFO[L_].desc}</small></span></label>`).join("");
-  document.querySelectorAll(".layer").forEach(el => el.onclick = () => {
-    layer = el.dataset.l; document.querySelectorAll(".layer").forEach(x => x.classList.toggle("on", x === el)); draw();
-  });
+  let html = "", g = null;
+  for(const L_ of R.layers){
+    const I = LAYER_INFO[L_];
+    if(I.g !== g){ g = I.g; html += `<div class="lbl group">${g}</div>`; }
+    html += `<div class="layer ${L_===layer?"on":""}" data-l="${L_}"><span class="rb"></span><span><b>${I.name}</b><small>${I.desc}</small></span></div>`;
+  }
+  $("#layers").innerHTML = html;
+  document.querySelectorAll(".layer").forEach(el => el.onclick = () => setLayer(el.dataset.l));
   dateIdx = R.dates.length - 1;
-  map.fitBounds(R.bounds, {paddingTopLeft: innerWidth > 860 ? [400, 90] : [0, 60], paddingBottomRight: innerWidth > 860 ? [20, 110] : [0, innerHeight*.5]});
+  if(!noFit) fit(R);
   if(marker){ marker.remove(); marker = null; }
-  $("#probe").innerHTML = `<h3>Field card</h3><p class="hint">Tap anywhere on the radar image to see how that spot changed across the season.</p>`;
+  $("#probe").innerHTML = emptyProbe();
   loadCube(k); draw();
+}
+
+function setLayer(l){
+  layer = l; document.querySelectorAll(".layer").forEach(x => x.classList.toggle("on", x.dataset.l === l)); draw();
 }
 
 function draw(){
   const R = META.regions[region], I = LAYER_INFO[layer];
   if(I.skipFirst && dateIdx === 0) dateIdx = 1;
-  $("#dates").innerHTML = R.dates.map((d,i) => `<button data-i="${i}" class="${I.dated && i===dateIdx?"on":""}" ${!I.dated || (I.skipFirst && i===0) ? "disabled" : ""}><b>${day(d)}</b><small>${mon(d)}</small></button>`).join("");
+  const canCmp = !!I.cmp; if(!canCmp) cmpOn = false;
+  if(cmpOn && dateIdx === 0) dateIdx = R.dates.length - 1;
+  $("#cmp").disabled = !canCmp; $("#cmp").classList.toggle("on", cmpOn);
+  $("#dates").innerHTML = R.dates.map((d,i) => `<button data-i="${i}" class="${I.dated && i===dateIdx?"on":""}" ${!I.dated || (I.skipFirst && i===0) || (cmpOn && i===0) ? "disabled" : ""}>${fmtDate(d)}</button>`).join("");
   document.querySelectorAll("#dates button").forEach(b => b.onclick = () => { dateIdx = +b.dataset.i; draw(); });
+  const op = $("#opacity").value/100;
   const file = I.dated ? `${layer}_${R.dates[dateIdx]}.webp` : `${layer}.webp`;
   if(overlay) overlay.remove();
-  overlay = L.imageOverlay(`data/${region}/${file}`, R.bounds, {opacity: $("#opacity").value/100, interactive:false}).addTo(map);
+  overlay = L.imageOverlay(`data/${region}/${file}`, R.bounds, {opacity:op, interactive:false}).addTo(map);
+  if(before){ before.remove(); before = null; }
+  if(cmpOn){
+    before = L.imageOverlay(`data/${region}/${layer}_${R.dates[0]}.webp`, R.bounds, {opacity:op, interactive:false, pane:"before"}).addTo(map);
+    $("#divider .dl.l").textContent = "◀ " + fmtDate(R.dates[0]);
+    $("#divider .dl.r").textContent = fmtDate(R.dates[dateIdx]) + " ▶";
+  }
+  $("#divider").style.display = cmpOn ? "block" : "none";
+  clip();
   $("#legend").innerHTML = I.legend
-    ? `<div class="t">${I.legend.t}</div><div class="bar" style="background:${I.legend.grad}"></div><div class="ticks">${I.legend.ticks.map(t=>`<span>${t}</span>`).join("")}</div>`
-    : `<div class="t">${I.name}</div><div class="ticks"><span>${I.desc}</span></div>`;
+    ? `<div class="lbl">${I.legend.t}</div><div class="bar" style="background:${I.legend.grad}"></div><div class="ticks">${I.legend.ticks.map(t=>`<span>${t}</span>`).join("")}</div>`
+    : `<div class="lbl">${I.name}</div><div class="ticks"><span>${I.desc}</span></div>`;
+}
+
+function setupDivider(){
+  const d = document.createElement("div"); d.id = "divider";
+  d.innerHTML = `<div class="ln"></div><div class="dl l"></div><div class="dl r"></div><div class="h">⇆</div>`;
+  map.getContainer().appendChild(d);
+  const h = d.querySelector(".h");
+  L.DomEvent.disableClickPropagation(d);
+  let drag = false;
+  h.addEventListener("pointerdown", e => { drag = true; h.setPointerCapture(e.pointerId); map.dragging.disable(); e.preventDefault(); });
+  h.addEventListener("pointermove", e => {
+    if(!drag) return;
+    const r = map.getContainer().getBoundingClientRect();
+    swipeX = Math.min(.98, Math.max(.02, (e.clientX - r.left)/r.width)); clip();
+  });
+  const up = () => { drag = false; map.dragging.enable(); };
+  h.addEventListener("pointerup", up); h.addEventListener("pointercancel", up);
+}
+
+function clip(){
+  const pane = map.getPane("before"); const size = map.getSize();
+  const x = size.x * swipeX;
+  $("#divider") && ($("#divider").style.left = x + "px");
+  if(!cmpOn){ pane.style.clip = ""; return; }
+  const nw = map.containerPointToLayerPoint([0,0]), se = map.containerPointToLayerPoint(size);
+  pane.style.clip = `rect(${nw.y}px, ${nw.x + x}px, ${se.y}px, ${nw.x}px)`;
 }
 
 async function loadCube(k){
@@ -960,7 +1070,7 @@ function val(k, band, r, c){
 
 function probe(ll){
   const R = META.regions[region];
-  if(!cubes[region]) return;
+  if(!cubes[region] || tourI >= 0) return;
   const [[, lon0], [lat1]] = R.bounds, [H, W] = R.cube_shape;
   const r = Math.floor((lat1 - ll.lat)/CUBE_STEP), c = Math.floor((ll.lng - lon0)/CUBE_STEP);
   if(r < 0 || c < 0 || r >= H || c >= W) return;
@@ -968,44 +1078,65 @@ function probe(ll){
   R.cube_order.forEach(([d, key], band) => { (rows[key] ||= {})[d] = val(region, band, r, c); });
   showTab("field");
   if(!R.dates.some(d => rows.HH[d] !== null)){
-    $("#probe").innerHTML = `<h3>Field card</h3><p class="hint">No radar data here (outside the NISAR swath). Try inside the coloured area.</p>`; return;
+    $("#probe").innerHTML = `<h3>No data</h3><p class="hint">Outside the NISAR swath or masked. Click inside the radar image.</p>`; return;
   }
-  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:8, color:"#F7F4D5", weight:3, fillColor:"#D3968C", fillOpacity:1}).addTo(map);
+  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:6, color:"#fff", weight:2, fillColor:"#1D5FB0", fillOpacity:1}).addTo(map);
   const keys = ["HH","HV","VV","SM","PHASE"].filter(k => rows[k]);
-  const unit = {HH:"dB", HV:"dB", VV:"dB", SM:"m³/m³", PHASE:"°"};
-  const name = {HH:"HH", HV:"HV", VV:"VV", SM:"Moisture", PHASE:"HH–VV phase"};
-  const f = (k, v) => v === null ? "–" : (k === "SM" ? v.toFixed(2) : (k === "PHASE" && v > 0 ? "+" : "") + v.toFixed(1));
-  let html = `<h3>${ll.lat.toFixed(3)}° N, ${ll.lng.toFixed(3)}° E</h3><p class="hint" style="margin:-4px 0 6px">~600 m cell · ${R.title}</p>
+  const name = {HH:"σ⁰ HH, dB", HV:"σ⁰ HV, dB", VV:"σ⁰ VV, dB", SM:"mᵥ, m³/m³", PHASE:"Δφ vs sand, °"};
+  const f = (k, v) => v === null ? "—" : (k === "SM" ? v.toFixed(2) : (k === "PHASE" && v > 0 ? "+" : "") + v.toFixed(1));
+  let html = `<div class="lbl">Cell ~600 m · ${R.title}</div><h3 class="mono" style="margin-top:2px">${ll.lat.toFixed(4)}° N, ${ll.lng.toFixed(4)}° E</h3>
   <table><tr><th></th>${R.dates.map(d => `<th>${fmtDate(d)}</th>`).join("")}</tr>
-  ${keys.map(k => `<tr><td>${name[k]} <span class="hint">${unit[k]}</span></td>${R.dates.map(d => `<td>${f(k, rows[k][d])}</td>`).join("")}</tr>`).join("")}</table>`;
-  html += sparkline(R.dates.map(d => rows.HV[d]), R.dates);
+  ${keys.map(k => `<tr><td>${name[k]}</td>${R.dates.map(d => `<td>${f(k, rows[k][d])}</td>`).join("")}</tr>`).join("")}</table>`;
+  html += chart(R.dates, rows);
   const v = [];
-  const risk = rows.RISK.all;
-  if(R.mode === "global" && risk !== null){
-    const bg = risk >= .9 ? "#9C4F45" : risk >= .75 ? "#D3968C" : "#839958";
-    v.push(`<span class="chip" style="background:${bg};color:${risk >= .9 ? "#F7F4D5" : "#0A3323"}">Risk: ${Math.round(risk*100)}th percentile</span>`);
+  if(R.mode === "global" && rows.RISK.all !== null){
+    const p = Math.round(rows.RISK.all*100), col = p >= 90 ? "var(--alert)" : p >= 70 ? "#B7791F" : "var(--ok)";
+    v.push(`<p><span class="tag" style="background:${col};color:#fff">RISK P${p}</span>${p >= 70 ? "Wet yet sparsely vegetated through the season — candidate salt-affected land." : "No salinization symptom from moisture/vegetation."}</p>`);
   }
   const hvs = R.dates.map(d => rows.HV[d]).filter(x => x !== null);
-  const dHV = hvs.length > 1 ? hvs[hvs.length-1] - hvs[0] : null;
-  if(dHV !== null) v.push(dHV < -2 ? "Vegetation dropped strongly → harvest or crop loss." : dHV > 2 ? "Vegetation grew during the season." : "Vegetation roughly stable.");
+  if(hvs.length > 1){ const dv = hvs[hvs.length-1] - hvs[0]; v.push(`<p><span class="tag" style="background:var(--accent-soft);color:var(--accent)">ΔHV ${dv>0?"+":""}${dv.toFixed(1)} dB</span>${dv < -2 ? "Strong vegetation loss: harvest or crop failure." : dv > 2 ? "Vegetation growth during the season." : "Vegetation roughly stable."}</p>`); }
   if(rows.PHASE){
     const ph = R.dates.map(d => rows.PHASE[d]).filter(x => x !== null);
     const sig = rows.SALT ? rows.SALT.all : null;
-    if(sig !== null && sig >= 0.99) v.push(`<br><span class="chip" style="background:#9C4F45;color:#F7F4D5">Salt signature</span>Phase is ≥ +5° above dry sand on every date (${ph.map(x=>"+"+x.toFixed(0)+"°").join(", ")}). The model gives +4…+9° for a salt crust and ≈ 0° for fresh moisture.`);
-    else if(ph.length) v.push(`<br>Phase vs sand: ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}. No stable salt signature here.`);
+    if(sig !== null && sig >= 0.99) v.push(`<p><span class="tag" style="background:#E4572E;color:#fff">SALT SIGNATURE</span>Δφ ≥ +5° on every date. Model: salt crust +4…+9°, moisture ≈ 0°.</p>`);
+    else if(ph.length) v.push(`<p><span class="tag" style="background:var(--panel-2);color:var(--muted);border:1px solid var(--line)">NO STABLE SIGNATURE</span>Δφ = ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}.</p>`);
   }
-  html += `<div class="verdict">${v.join(" ")}</div>`;
+  html += `<div class="verdict">${v.join("")}</div>`;
   $("#probe").innerHTML = html;
 }
 
-function sparkline(vals, dates){
-  const ok = vals.filter(v => v !== null); if(ok.length < 2) return "";
-  const w = 320, h = 70, lo = Math.min(...ok) - 1, hi = Math.max(...ok) + 1;
-  const pts = vals.map((v,i) => v === null ? null : [20 + i*(w-40)/(vals.length-1), h - 18 - (v-lo)/(hi-lo)*(h-34)]).filter(Boolean);
-  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" style="margin-top:10px;color:var(--muted)" aria-label="HV through the season">
-    <text x="0" y="11" font-size="11" fill="currentColor">Vegetation (HV) through the season</text>
-    <polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#D3968C" stroke-width="3" stroke-linecap="round"/>
-    ${pts.map((p,i) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#D3968C"/><text x="${p[0]}" y="${h-2}" font-size="10.5" fill="currentColor" text-anchor="middle">${fmtDate(dates[i])}</text>`).join("")}</svg>`;
+function chart(dates, rows){
+  const series = [["HV","σ⁰ HV (dB)","var(--accent)"]];
+  if(rows.PHASE) series.push(["PHASE","Δφ (°)","#E4572E"]);
+  return series.map(([k, label, col]) => {
+    const vals = dates.map(d => rows[k][d]), ok = vals.filter(v => v !== null); if(ok.length < 2) return "";
+    const w = 320, h = 74, lo = Math.min(...ok), hi = Math.max(...ok), pad = Math.max(1, (hi-lo)*.25);
+    const y = v => 12 + (1 - (v-(lo-pad))/((hi+pad)-(lo-pad)))*(h-30);
+    const pts = vals.map((v,i) => v === null ? null : [28 + i*(w-48)/(vals.length-1), y(v), v]).filter(Boolean);
+    return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" style="margin-top:8px;color:var(--faint);font-family:IBM Plex Mono">
+      <text x="0" y="9" font-size="10" fill="currentColor">${label}</text>
+      <line x1="20" x2="${w-12}" y1="${h-16}" y2="${h-16}" stroke="currentColor" stroke-opacity=".4"/>
+      <polyline points="${pts.map(p=>p[0]+","+p[1]).join(" ")}" fill="none" stroke="${col}" stroke-width="2"/>
+      ${pts.map((p,i) => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="${col}"/><text x="${p[0]}" y="${p[1]-7}" font-size="10" fill="currentColor" text-anchor="middle">${p[2].toFixed(1)}</text><text x="${p[0]}" y="${h-3}" font-size="10" fill="currentColor" text-anchor="middle">${fmtDate(dates[i])}</text>`).join("")}</svg>`;
+  }).join("");
+}
+
+function tourGo(i){
+  tourI = i;
+  if(i < 0){ $("#tour").style.display = "none"; return; }
+  const s = TOUR[i];
+  if(s.r){
+    if(s.r !== region) selectRegion(s.r, true);
+    showTab("layers");
+    if(s.l) setLayer(s.l);
+    if(s.d !== undefined){ dateIdx = s.d; draw(); }
+    if(s.c) map.flyTo(s.c, s.z, {duration:1.2}); else fit(META.regions[region]);
+  }
+  if(s.tab) showTab(s.tab);
+  $("#tourN").textContent = `Step ${i+1} / ${TOUR.length}`;
+  $("#tourT").textContent = s.t; $("#tourP").innerHTML = s.p;
+  $("#tourB").disabled = i === 0; $("#tourF").textContent = i === TOUR.length-1 ? "Finish" : "Next";
+  $("#tour").style.display = "block";
 }
 
 init();

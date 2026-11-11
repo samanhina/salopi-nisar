@@ -73,8 +73,8 @@ res["by_angle_wet_fresh_vs_sand"] = {th: dphi(0.04, 0, 0.30, 0, th) for th in (3
 MV, LS = np.meshgrid(np.linspace(0.03, 0.40, 120), np.linspace(-1, np.log10(50), 120))
 PH = phase(MV, 10 ** LS)[0]
 plt.figure(figsize=(7, 5))
-cs = plt.contourf(MV, 10 ** LS, PH, levels=21, cmap=__import__("matplotlib.colors",fromlist=["x"]).LinearSegmentedColormap.from_list("d",["#105666","#7FA9B0","#F7F4D5","#E2B5AC","#9C4F45"])); plt.colorbar(cs, label="HH−VV phase, °")
-plt.contour(MV, 10 ** LS, PH, levels=[-10, -5, -2, 0], colors="#0A3323", linewidths=.7)
+cs = plt.contourf(MV, 10 ** LS, PH, levels=21, cmap="RdBu_r"); plt.colorbar(cs, label="HH−VV phase, °")
+plt.contour(MV, 10 ** LS, PH, levels=[-10, -5, -2, 0], colors="k", linewidths=.6)
 plt.yscale("log"); plt.xlabel("Soil moisture, m³/m³"); plt.ylabel("Salt, g/kg soil")
 plt.title("Model: phase follows SALT (vertical), barely MOISTURE (horizontal)")
 plt.tight_layout(); plt.savefig(f"{OUT}/phase_map.png", dpi=130); plt.close()
