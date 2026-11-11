@@ -1,0 +1,182 @@
+{
+ "zones": {
+  "SAND": [
+   [
+    69.8,
+    24.42,
+    70.4,
+    24.56
+   ],
+   [
+    69.35,
+    24.45,
+    69.7,
+    24.68
+   ]
+  ],
+  "SALT": [
+   [
+    69.95,
+    23.98,
+    70.25,
+    24.18
+   ],
+   [
+    70.55,
+    23.98,
+    71.0,
+    24.14
+   ]
+  ],
+  "BET": [
+   [
+    70.55,
+    23.76,
+    70.9,
+    23.88
+   ]
+  ]
+ },
+ "dates": {
+  "20260618": {
+   "sand_ref_absolute_phase_deg": 60.9,
+   "SAND": {
+    "n_pixels": 28498,
+    "bare_fraction": 0.73,
+    "phase_vs_sand_deg": 0.0,
+    "phase_spread_deg_IQR": [
+     -4.1,
+     4.1
+    ],
+    "HH_dB": -14.0,
+    "VV_dB": -14.45,
+    "HV_dB": -19.52,
+    "soil_moisture": 0.133
+   },
+   "SALT": {
+    "n_pixels": 12087,
+    "bare_fraction": 0.33,
+    "phase_vs_sand_deg": 8.86,
+    "phase_spread_deg_IQR": [
+     4.4,
+     11.9
+    ],
+    "HH_dB": -18.59,
+    "VV_dB": -13.05,
+    "HV_dB": -24.68,
+    "soil_moisture": 0.034
+   },
+   "BET": {
+    "n_pixels": 9778,
+    "bare_fraction": 0.83,
+    "phase_vs_sand_deg": 6.75,
+    "phase_spread_deg_IQR": [
+     3.3,
+     10.2
+    ],
+    "HH_dB": -13.74,
+    "VV_dB": -13.15,
+    "HV_dB": -20.76,
+    "soil_moisture": 0.117
+   }
+  },
+  "20260712": {
+   "sand_ref_absolute_phase_deg": 61.0,
+   "SAND": {
+    "n_pixels": 29850,
+    "bare_fraction": 0.77,
+    "phase_vs_sand_deg": 0.0,
+    "phase_spread_deg_IQR": [
+     -4.0,
+     4.1
+    ],
+    "HH_dB": -14.13,
+    "VV_dB": -14.57,
+    "HV_dB": -19.68,
+    "soil_moisture": 0.131
+   },
+   "SALT": {
+    "n_pixels": 11324,
+    "bare_fraction": 0.3,
+    "phase_vs_sand_deg": 14.48,
+    "phase_spread_deg_IQR": [
+     10.3,
+     16.9
+    ],
+    "HH_dB": -18.48,
+    "VV_dB": -13.83,
+    "HV_dB": -24.53,
+    "soil_moisture": 0.02
+   },
+   "BET": {
+    "n_pixels": 9537,
+    "bare_fraction": 0.81,
+    "phase_vs_sand_deg": 5.77,
+    "phase_spread_deg_IQR": [
+     2.7,
+     9.4
+    ],
+    "HH_dB": -13.82,
+    "VV_dB": -13.05,
+    "HV_dB": -20.95,
+    "soil_moisture": 0.11
+   }
+  },
+  "20261016": {
+   "sand_ref_absolute_phase_deg": -96.2,
+   "SAND": {
+    "n_pixels": 39113,
+    "bare_fraction": 1.0,
+    "phase_vs_sand_deg": 0.0,
+    "phase_spread_deg_IQR": [
+     -3.9,
+     3.9
+    ],
+    "HH_dB": -12.76,
+    "VV_dB": -13.54,
+    "HV_dB": -19.02,
+    "soil_moisture": 0.166
+   },
+   "SALT": {
+    "n_pixels": 13738,
+    "bare_fraction": 0.37,
+    "phase_vs_sand_deg": 4.63,
+    "phase_spread_deg_IQR": [
+     2.6,
+     4.8
+    ],
+    "HH_dB": -18.75,
+    "VV_dB": -12.46,
+    "HV_dB": -25.6,
+    "soil_moisture": 0.105
+   },
+   "BET": {
+    "n_pixels": 9326,
+    "bare_fraction": 0.79,
+    "phase_vs_sand_deg": -3.32,
+    "phase_spread_deg_IQR": [
+     -8.9,
+     5.1
+    ],
+    "HH_dB": -11.51,
+    "VV_dB": -11.89,
+    "HV_dB": -18.93,
+    "soil_moisture": 0.162
+   }
+  }
+ },
+ "separability_salt_vs_sand": {
+  "20260618": {
+   "AUC": 0.846,
+   "balanced_accuracy": 0.812
+  },
+  "20260712": {
+   "AUC": 0.954,
+   "balanced_accuracy": 0.895
+  },
+  "20261016": {
+   "AUC": 0.746,
+   "balanced_accuracy": 0.769
+  }
+ }
+}

@@ -24,9 +24,13 @@ cd docs && python -m http.server                        # open http://localhost:
 ```
 Put granules in `data/indus/` and `data/mirzachul/`.
 
+## Is it really salt? (evidence)
+`processing/phase_theory.py` – SALOPI soil physics at 1.257 GHz with a Bragg (SPM) surface model: salt crust shifts HH–VV phase by **+4…+9°**, moisture alone by **−0.2°**; salt explains 74% of phase variance.
+`processing/rann_test.py` – natural experiment on real NISAR quad-pol scenes: Great Rann salt flat vs Thar sand dunes (zones by geography, bare pixels only). Salt flat sits **+9°, +14°, +5°** above sand on all three dates, while NISAR SME2 says it is *drier*; phase alone separates the two with **77–90% accuracy** (AUC 0.75–0.95). Figures and numbers in `results/`.
+
 ## Method notes and honest limits
 - Complex HH·VV* is averaged over 10×10 pixels **before** taking the angle (standard multilook phase).
-- Provisional scenes carry a constant HH–VV phase offset (+68° Jun/Jul, −91° Oct); phase is shown **relative to the scene mean**.
+- Provisional scenes carry a constant HH–VV phase offset (+68° Jun/Jul, −91° Oct); phase is measured **relative to dry Thar sand dunes** (natural target, ε″ ≈ 0).
 - Risk = percentile(soil moisture) × (1 − percentile(season-max HV)), open water removed. A screening indicator, not a salinity measurement; it needs field ECe samples to calibrate.
 - Physics background (Stogryn + Dobson + Fresnel model, 240-case virtual experiment) comes from our SALOPI P-band CubeSat project.
 

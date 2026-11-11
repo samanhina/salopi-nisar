@@ -23,6 +23,10 @@
   "RISK": [
    0,
    1
+  ],
+  "SALT": [
+   0,
+   1
   ]
  },
  "regions": {
@@ -54,33 +58,33 @@
     "dHV",
     "dHH",
     "SM",
-    "RISK",
-    "PHASE"
+    "PHASE",
+    "SALT"
    ],
    "stats": {
     "20260618": {
-     "phase_offset_deg": 68.1,
+     "phase_offset_deg": 60.9,
      "HH_median": -16.215,
      "HV_median": -22.353,
      "VV_median": -14.555,
      "SM_median": 0.098,
-     "PHASE_median": -0.583
+     "PHASE_median": 6.666
     },
     "20260712": {
-     "phase_offset_deg": 68.2,
+     "phase_offset_deg": 61.0,
      "HH_median": -16.279,
      "HV_median": -22.736,
      "VV_median": -14.437,
      "SM_median": 0.097,
-     "PHASE_median": -0.364
+     "PHASE_median": 6.777
     },
     "20261016": {
-     "phase_offset_deg": -90.7,
+     "phase_offset_deg": -96.2,
      "HH_median": -15.733,
      "HV_median": -22.611,
      "VV_median": -14.208,
      "SM_median": 0.134,
-     "PHASE_median": -0.771
+     "PHASE_median": 4.655
     }
    },
    "cube_order": [
@@ -147,6 +151,10 @@
     [
      "all",
      "RISK"
+    ],
+    [
+     "all",
+     "SALT"
     ]
    ]
   },

@@ -1,0 +1,26 @@
+{
+ "moisture_effect_nonsaline_0.05_to_0.35": -0.16981222348025904,
+ "salt_effect_at_mv0.25_0_to_4gkg": 2.9605738169545033,
+ "salt_effect_at_mv0.25_0_to_30gkg": 4.9457440386194955,
+ "salt_effect_at_mv0.10_0_to_30gkg": 7.427139979896236,
+ "vs_dry_sand: damp_salt_crust_mv0.10_30gkg": 7.397679519860763,
+ "vs_dry_sand: wet_salt_crust_mv0.30_30gkg": 4.412246690253729,
+ "vs_dry_sand: wet_nonsaline_mv0.30": -0.14974678892592308,
+ "by_angle_salt_crust_vs_sand": {
+  "33": 4.308910882593163,
+  "37": 5.435647571777528,
+  "40": 6.3802624541467186,
+  "44": 7.7855464492532445,
+  "47": 8.960806366755065
+ },
+ "by_angle_wet_fresh_vs_sand": {
+  "33": -0.11213396827780872,
+  "37": -0.13362617940004984,
+  "40": -0.14974678892592308,
+  "44": -0.17088563613326702,
+  "47": -0.18620606541244494
+ },
+ "eta2_phase_explained_by_log_salt": 0.7374973162435763,
+ "eta2_phase_explained_by_moisture": 0.12908178507601287,
+ "eta2_phase_explained_by_angle": 0.058584492761980744
+}

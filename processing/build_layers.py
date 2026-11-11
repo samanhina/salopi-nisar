@@ -23,7 +23,7 @@ CUBE_STEP = 0.006   # ~600 m grid for click-to-inspect numbers
 OUT = "docs/data"
 
 QUANT = {  # value = lo + q*(hi-lo)/250 ; 255 = no data
-    "HH": (-35, 5), "HV": (-40, 0), "VV": (-35, 5), "PHASE": (-45, 45), "SM": (0, 0.6), "RISK": (0, 1),
+    "HH": (-35, 5), "HV": (-40, 0), "VV": (-35, 5), "PHASE": (-45, 45), "SM": (0, 0.6), "RISK": (0, 1), "SALT": (0, 1),
 }
 
 
@@ -61,9 +61,23 @@ def quant(a, key):
     return q.astype("uint8")
 
 
-def rel_phase(c):
+# Natural phase reference: dry, non-saline Thar sand dunes (eps'' ~ 0 -> HH-VV phase ~ 0 in the SPM model).
+SAND_REF = [(69.80, 24.42, 70.40, 24.56), (69.35, 24.45, 69.70, 24.68)]
+
+
+def bare_mask(hh, hv, vv):
+    """Surface scattering above the noise floor: low depolarisation, enough signal in HH and VV."""
+    return (hv - hh < -5) & (hh > -25) & (vv > -25)
+
+
+def rel_phase(c, LON, LAT, bare):
     u = c / np.abs(c)
-    ref = np.nansum(u); ref /= abs(ref)
+    m = np.zeros(c.shape, bool)
+    for b in SAND_REF:
+        m |= (LON >= b[0]) & (LON <= b[2]) & (LAT >= b[1]) & (LAT <= b[3])
+    m &= bare & np.isfinite(u.real)
+    ref = np.nanmean(u[m]) if m.sum() > 50 else np.nanmean(u)   # fall back to scene mean
+    ref /= abs(ref)
     return np.degrees(np.angle(c * np.conj(ref))), float(np.degrees(np.angle(ref)))
 
 
@@ -113,7 +127,8 @@ def build(key):
             if "HHVV" in D:
                 L["VV"] = 10 * np.log10(sample_regular(D["VVVV"], D["x"], D["y"], X, Y))
                 c = sample_regular(D["HHVV"], D["x"], D["y"], X, Y)
-                L["PHASE"], ref = rel_phase(c)
+                L["BARE"] = bare_mask(L["HH"], L["HV"], L["VV"])
+                L["PHASE"], ref = rel_phase(c, LON, LAT, L["BARE"])
                 if gname == "pic":
                     meta["stats"].setdefault(d, {})["phase_offset_deg"] = round(ref, 1)
             L["SM"] = load_sm(smf[d], LON, LAT) if d in smf else np.full(LON.shape, np.nan, "float32")
@@ -143,6 +158,17 @@ def build(key):
         for d in dates:
             P[d]["RISK"] = risk
 
+    # --- salt signature (precision mode): bare surface with HH-VV phase >= +5 deg vs sand, ---------
+    # counted over all dates. Model: salt crust gives +4..+9 deg, moisture alone ~0 deg.
+    if "PHASE" in per["pic"][dates[0]]:
+        for gname in ("pic", "cube"):
+            P = per[gname]
+            hits = sum(((P[d]["PHASE"] >= 5) & P[d]["BARE"]).astype(float) for d in dates)
+            seen = sum((np.isfinite(P[d]["PHASE"]) & P[d]["BARE"]).astype(float) for d in dates)
+            sig = np.where(seen >= 2, hits / np.maximum(seen, 1), np.nan)   # need >= 2 usable dates
+            for d in dates:
+                P[d]["SALT"] = sig
+
     # --- pictures -------------------------------------------------------------------------------
     first = dates[0]
     for d in dates:
@@ -163,7 +189,12 @@ def build(key):
             if k in L:
                 st[f"{k}_median"] = round(float(np.nanmedian(L[k])), 3)
     to_png(colorize(np.where(per["pic"][first]["RISK"] >= 0.75, per["pic"][first]["RISK"], np.nan), "YlOrRd", 0.75, 1.0), f"{od}/RISK.png")
-    meta["layers"] = ["RGB", "HV", "dHV", "dHH", "SM", "RISK"] + (["PHASE"] if "PHASE" in per["pic"][first] else [])
+    if "SALT" in per["pic"][first]:
+        sg = per["pic"][first]["SALT"]
+        to_png(colorize(np.where(sg >= 0.99, 1.0, np.nan), "Blues", 0.0, 1.0), f"{od}/SALT.png")   # shift on EVERY date
+        meta["layers"] = ["RGB", "HV", "dHV", "dHH", "SM", "PHASE", "SALT"]
+    else:
+        meta["layers"] = ["RGB", "HV", "dHV", "dHH", "SM", "RISK"]
 
     # --- data cube for click-to-inspect -------------------------------------------------------
     keys = [k for k in ("HH", "HV", "VV", "PHASE", "SM") if k in per["cube"][first]]
@@ -172,6 +203,8 @@ def build(key):
         for k in keys:
             blocks.append(quant(per["cube"][d][k], k)); order.append([d, k])
     blocks.append(quant(per["cube"][first]["RISK"], "RISK")); order.append(["all", "RISK"])
+    if "SALT" in per["cube"][first]:
+        blocks.append(quant(per["cube"][first]["SALT"], "RISK")); order.append(["all", "SALT"])
     # base64 text so it can be served as a plain .txt file by any static host
     import base64
     open(f"{od}/cube.txt", "w").write(base64.b64encode(np.stack(blocks).tobytes()).decode())

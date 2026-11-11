@@ -771,10 +771,24 @@ details p,details li{color:var(--muted);font-size:13.5px}
         <li><b>Precision mode</b> (quad-pol scenes): adds the HH–VV phase — the direct dielectric fingerprint of salt.</li>
       </ul>
     </details>
+    <details open>
+      <summary>Evidence: is it really salt?</summary>
+      <p><b>1 · Physics.</b> Our SALOPI model at NISAR's 1.26 GHz (Stogryn + Dobson + Bragg surface scattering): a salt crust shifts HH–VV phase by <b>+4…+9°</b>; moisture alone by only <b>−0.2°</b>. Salt explains 74% of phase variance, moisture 13%.</p>
+      <img src="phase_model.png" alt="Model map of HH–VV phase over moisture and salt" style="width:100%;border-radius:8px">
+      <p><b>2 · Real NISAR data, natural experiment.</b> Great Rann of Kutch salt flat vs non-saline Thar sand dunes (zones set by geography, bare pixels only):</p>
+      <img src="evidence.png" alt="Salt flat phase shift on three dates and phase-only accuracy" style="width:100%;border-radius:8px">
+      <ul>
+        <li>The salt flat sits <b>+9°, +14°, +5°</b> above sand on all three dates — same sign and size as the model.</li>
+        <li>It is <b>not moisture</b>: NISAR's own soil-moisture product says the salt flat is <i>drier</i> than the dunes.</li>
+        <li>Control (Khadir/Bela islands) flips sign between dates — no stable shift.</li>
+        <li>Phase alone tells salt flat from sand with <b>77–90% accuracy</b> (AUC 0.75–0.95).</li>
+      </ul>
+    </details>
     <details>
       <summary>Honest limits</summary>
       <ul>
-        <li>These are <b>provisional</b> NISAR products. Each scene carries a constant HH–VV phase offset (+68° in June/July, −91° in October) from calibration still in progress, so we show phase <b>relative to the scene average</b>.</li>
+        <li>These are <b>provisional</b> NISAR products. Each scene carries a constant HH–VV phase offset (+61° in June/July, −96° in October) from calibration still in progress, so we measure phase <b>relative to dry Thar sand dunes</b>, a natural target with ε″ ≈ 0.</li>
+        <li>Roughness and surface type also change the phase a little; the salt flat is smoother than the dunes. We control for vegetation (bare pixels only) and moisture, but not yet for roughness.</li>
         <li>The risk layer is a <b>screening</b> indicator, not a salinity measurement. It needs field checks (ECe samples) to calibrate.</li>
         <li>At L-band the salt effect is weak; our long-term goal is a P-band receiver (SALOPI CubeSat) that listens to existing satellite signals.</li>
       </ul>
@@ -800,8 +814,10 @@ const LAYER_INFO = {
          legend:{grad:"linear-gradient(90deg,#ffffd9,#7fcdbb,#1d91c0,#081d58)", ticks:["0.02","0.21","0.40 m³/m³"]}},
   RISK: {name:"Salinization risk (screening)", desc:"Wet but bare all season. Shown: the riskiest 25% of land", dated:false,
          legend:{grad:"linear-gradient(90deg,#ffffcc,#fd8d3c,#800026)", ticks:["top 25%","top 12%","top 1%"]}},
-  PHASE:{name:"HH–VV phase (salt fingerprint)", desc:"Relative to scene average. Precision mode only", dated:true,
+  PHASE:{name:"HH–VV phase (salt fingerprint)", desc:"Relative to Thar sand dunes (natural zero). Model: salt +4…+9°, moisture ≈0°", dated:true,
          legend:{grad:"linear-gradient(90deg,#2d004b,#8073ac,#f7f7f7,#e08214,#7f3b08)", ticks:["−25°","0°","+25°"]}},
+  SALT: {name:"Salt signature detected", desc:"Bare ground with phase ≥ +5° on EVERY date — salt, not a one-off wet spell", dated:false,
+         legend:{grad:"linear-gradient(90deg,#08306b,#08306b)", ticks:["flagged on all dates",""]}},
 };
 const MODE_TEXT = {
   precision:{t:"Precision mode", p:"Quad-pol scene: HH, HV, VH, VV and the complex HH·VV* term. The HH–VV phase reveals the dielectric fingerprint of salt."},
@@ -917,8 +933,10 @@ function probe(ll){
   }
   if(dHV !== null) v.push(dHV < -2 ? "Vegetation dropped strongly → harvest or crop loss." : dHV > 2 ? "Vegetation grew during the season." : "Vegetation roughly stable.");
   if(rows.PHASE){
-    const ph = rows.PHASE[R.dates[R.dates.length-1]];
-    if(ph !== null && Math.abs(ph) > 10) v.push(`HH–VV phase deviates ${ph.toFixed(0)}° from the scene average → unusual dielectric behaviour, a candidate salt or wet-crust spot.`);
+    const ph = R.dates.map(d => rows.PHASE[d]).filter(x => x !== null);
+    const sig = rows.SALT ? rows.SALT.all : null;
+    if(sig !== null && sig >= 0.99) v.push(`<span class="chip" style="background:#08306b;color:#fff">Salt signature</span> Phase is ≥ +5° above dry sand on every date (${ph.map(x=>x.toFixed(0)+"°").join(", ")}). Our model gives +4…+9° for a salt crust and ≈0° for fresh moisture.`);
+    else if(ph.length) v.push(`HH–VV phase vs sand: ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}. No stable salt signature here.`);
   }
   html += `<div class="verdict">${v.join(" ")}</div>`;
   $("#probe").innerHTML = html;
