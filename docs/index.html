@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SALOPI × NISAR</title>
-<style>/* Leaflet 1.9.4 CSS (BSD-2) */
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,400..900,0..100,0..1;1,9..144,400..900,0..100,0..1&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>/* Leaflet 1.9.4 (BSD-2) */
 /* required styles */
 
 .leaflet-pane,
@@ -666,171 +668,224 @@ svg.leaflet-image-layer.leaflet-interactive path {
 		print-color-adjust: exact;
 		}
 	}
-
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* Palette: Dark green #0A3323 · Moss green #839958 · Beige #F7F4D5 · Rosy brown #D3968C · Midnight green #105666 */
 :root{
-  --bg:#F4EFE6; --panel:#FBF8F2; --ink:#1B2A3A; --muted:#5B6470; --line:#E3DCD0;
-  --accent:#C4532A; --accent-soft:#F6DCCD; --map:#DCD5C8; --good:#2F6F5E;
+  --bg:#F7F4D5; --card:rgba(251,249,232,.94); --card-solid:#FBF9E8; --ink:#0A3323; --muted:#4F6B4A;
+  --line:rgba(10,51,35,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#105666;
+  --map:#E9E5C4; --shadow:0 10px 30px rgba(10,51,35,.18);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#0F1E2E; --panel:#15283B; --ink:#F4EFE6; --muted:#A9B6C4; --line:#26384D;
-    --accent:#E07A50; --accent-soft:#3A2A22; --map:#0B1622; --good:#6FC2A8;
+    --bg:#0A3323; --card:rgba(10,51,35,.92); --card-solid:#0C3A28; --ink:#F7F4D5; --muted:#B5C49A;
+    --line:rgba(247,244,213,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#3B8A98;
+    --map:#072519; --shadow:0 10px 30px rgba(0,0,0,.45);
   }
 }
 :root[data-theme="dark"]{
-  --bg:#0F1E2E; --panel:#15283B; --ink:#F4EFE6; --muted:#A9B6C4; --line:#26384D;
-  --accent:#E07A50; --accent-soft:#3A2A22; --map:#0B1622; --good:#6FC2A8;
+  --bg:#0A3323; --card:rgba(10,51,35,.92); --card-solid:#0C3A28; --ink:#F7F4D5; --muted:#B5C49A;
+  --line:rgba(247,244,213,.14); --moss:#839958; --rose:#D3968C; --rose-ink:#0A3323; --mid:#3B8A98;
+  --map:#072519; --shadow:0 10px 30px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box}
-html,body{margin:0;height:100%}
-body{background:var(--bg);color:var(--ink);font:15px/1.45 'DM Sans',system-ui,sans-serif;display:flex;flex-direction:column}
-header{display:flex;align-items:center;gap:16px;padding:12px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-header h1{font:700 22px 'Space Grotesk',sans-serif;margin:0;letter-spacing:-.5px}
-header h1 span{color:var(--accent)}
-header .sub{color:var(--muted);font-size:13px}
-header .sp{flex:1}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.seg button{border:0;background:transparent;color:var(--ink);padding:7px 12px;font:inherit;font-size:14px;cursor:pointer}
-.seg button.on{background:var(--accent);color:#fff}
-main{flex:1;display:flex;min-height:0}
-#side{width:360px;flex:none;overflow-y:auto;background:var(--panel);border-right:1px solid var(--line);padding:16px 18px 28px}
-#map{flex:1;background:var(--map)}
-h2{font:600 13px 'DM Sans';text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin:20px 0 8px}
-h2:first-child{margin-top:0}
-.mode{border-left:4px solid var(--accent);padding:4px 0 4px 12px;margin-bottom:6px}
-.mode b{font-family:'Space Grotesk';font-size:17px}
-.mode p{margin:4px 0 0;color:var(--muted);font-size:13.5px}
-.layers label{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;border-radius:8px;cursor:pointer}
-.layers label:hover{background:var(--accent-soft)}
-.layers input{margin-top:4px;accent-color:var(--accent)}
-.layers small{display:block;color:var(--muted);font-size:12.5px}
-.row{display:flex;align-items:center;gap:10px}
-input[type=range]{flex:1;accent-color:var(--accent)}
-.dates{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
-.dates span.on{color:var(--accent);font-weight:700}
-#legend{margin-top:8px}
-#legend .bar{height:12px;border-radius:3px}
-#legend .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
-#probe{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--bg)}
-#probe .hint{color:var(--muted);font-size:13.5px}
-#probe table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
-#probe td,#probe th{padding:3px 4px;text-align:right;border-bottom:1px solid var(--line)}
-#probe th:first-child,#probe td:first-child{text-align:left}
-#probe .verdict{margin-top:8px;font-size:13.5px}
-.chip{display:inline-block;padding:1px 8px;border-radius:99px;font-size:12px;font-weight:700}
-details{border-top:1px solid var(--line);padding:10px 0}
-details summary{cursor:pointer;font-weight:700}
-details p,details li{color:var(--muted);font-size:13.5px}
-.note{font-size:12.5px;color:var(--muted)}
+html,body{margin:0;height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.5 'Outfit',system-ui,sans-serif}
+.serif{font-family:'Fraunces',Georgia,serif;font-variation-settings:"SOFT" 100,"WONK" 1}
+#map{position:fixed;inset:0;background:var(--map)}
 .leaflet-container{font:inherit;background:var(--map)}
-@media (max-width:820px){
-  main{flex-direction:column}
-  #side{width:auto;border-right:0;border-top:1px solid var(--line);order:2;max-height:55vh;padding:14px 16px}
-  #map{order:1;min-height:45vh}
-  header{padding:10px 16px}
+.leaflet-top.leaflet-right{top:96px;right:10px}
+.leaflet-control-zoom{border:0!important;box-shadow:var(--shadow)!important;border-radius:14px!important;overflow:hidden}
+.leaflet-control-zoom a{background:var(--card-solid)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.leaflet-control-attribution{background:var(--card)!important;color:var(--muted)!important;border-radius:10px 0 0 0}
+.leaflet-control-attribution a{color:var(--mid)!important}
+.card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+
+/* brand */
+#brand{position:fixed;left:20px;top:18px;z-index:1000;padding:14px 22px 14px 20px;display:flex;align-items:center;gap:14px}
+#brand h1{margin:0;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:34px;line-height:1;letter-spacing:-.5px;font-variation-settings:"SOFT" 100,"WONK" 1,"opsz" 144}
+#brand h1 i{font-weight:400;color:var(--rose);font-style:italic;margin:0 2px}
+#brand .tag{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);line-height:1.35;border-left:1px solid var(--line);padding-left:14px}
+
+/* region switch */
+#regions{position:fixed;right:20px;top:18px;z-index:1000;padding:6px;display:flex;gap:4px}
+#regions button{border:0;background:transparent;color:var(--ink);font:500 14px 'Outfit';padding:10px 16px;border-radius:16px;cursor:pointer;text-align:left;line-height:1.15}
+#regions button small{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+#regions button.on{background:var(--ink);color:var(--bg)}
+#regions button.on small{color:inherit;opacity:.7}
+
+/* side panel */
+#panel{position:fixed;left:20px;top:104px;bottom:120px;width:370px;z-index:1000;display:flex;flex-direction:column;overflow:hidden}
+#tabs{display:flex;gap:2px;padding:8px 8px 0}
+#tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:500 13.5px 'Outfit';padding:9px 4px;border-radius:12px 12px 0 0;cursor:pointer;border-bottom:2px solid transparent}
+#tabs button.on{color:var(--ink);border-bottom-color:var(--rose)}
+.pane{display:none;overflow-y:auto;padding:16px 20px 22px;flex:1}
+.pane.on{display:block}
+.mode{background:#105666;color:#F7F4D5;border-radius:16px;padding:14px 16px;margin-bottom:14px}
+.mode .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:.75}
+.mode b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:22px;line-height:1.15;margin:2px 0 4px;font-variation-settings:"SOFT" 100,"WONK" 1}
+.mode p{margin:0;font-size:13.5px;opacity:.92}
+.layer{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:14px;cursor:pointer;border:1px solid transparent}
+.layer:hover{background:rgba(131,153,88,.14)}
+.layer.on{background:rgba(211,150,140,.22);border-color:rgba(211,150,140,.6)}
+.layer input{display:none}
+.layer .dot{flex:none;width:14px;height:14px;border-radius:50%;margin-top:4px;border:2px solid var(--moss)}
+.layer.on .dot{background:var(--rose);border-color:var(--rose)}
+.layer b{font-weight:500}
+.layer small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4}
+h3{font-family:'Fraunces',Georgia,serif;font-weight:700;font-size:20px;margin:18px 0 8px;font-variation-settings:"SOFT" 100,"WONK" 1}
+h3:first-child{margin-top:0}
+.pane p,.pane li{color:var(--muted);font-size:14px}
+.pane p b,.pane li b{color:var(--ink)}
+.pane img{width:100%;border-radius:14px;border:1px solid var(--line);background:#fff}
+.big{display:flex;gap:10px;margin:10px 0}
+.big div{flex:1;background:rgba(131,153,88,.16);border-radius:14px;padding:10px 12px}
+.big b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:28px;line-height:1.05;color:var(--ink)}
+.big span{font-size:12px;color:var(--muted)}
+.hint{color:var(--muted);font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+td,th{padding:6px 4px;text-align:right;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--muted)}
+th:first-child,td:first-child{text-align:left}
+.chip{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;margin:2px 4px 2px 0}
+.verdict{margin-top:10px;font-size:14px;line-height:1.55}
+.theme{display:flex;gap:6px;margin-top:14px}
+.theme button{border:1px solid var(--line);background:transparent;color:var(--ink);font:13px 'Outfit';padding:6px 12px;border-radius:99px;cursor:pointer}
+.theme button.on{background:var(--ink);color:var(--bg)}
+
+/* timeline */
+#timeline{position:fixed;left:410px;right:20px;bottom:24px;z-index:1000;padding:12px 18px;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+#dates{display:flex;gap:6px}
+#dates button{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:16px;padding:6px 14px;cursor:pointer;text-align:center;line-height:1.05}
+#dates button b{display:block;font-family:'Fraunces',Georgia,serif;font-weight:800;font-size:24px;font-variation-settings:"SOFT" 100,"WONK" 1}
+#dates button small{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+#dates button.on{background:var(--rose);border-color:var(--rose);color:var(--rose-ink)}
+#dates button.on small{color:var(--rose-ink)}
+#dates button:disabled{opacity:.35;cursor:default}
+#legend{flex:1;min-width:200px}
+#legend .t{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+#legend .bar{height:10px;border-radius:99px}
+#legend .ticks{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:2px}
+.op{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+input[type=range]{accent-color:var(--rose);width:110px}
+
+@media (max-width:860px){
+  #brand{left:12px;top:12px;padding:10px 14px}
+  #brand h1{font-size:24px}
+  #brand .tag{display:none}
+  #regions{left:12px;right:12px;top:auto;bottom:calc(46vh + 92px);justify-content:center}
+  #regions button{padding:8px 12px;font-size:13px}
+  #panel{left:0;right:0;bottom:0;top:auto;width:auto;height:46vh;border-radius:22px 22px 0 0}
+  #timeline{left:12px;right:12px;bottom:calc(46vh + 12px);padding:8px 12px;gap:10px}
+  #dates button{padding:4px 10px}
+  #dates button b{font-size:18px}
+  .op{display:none}
+  #legend{min-width:120px}
 }
 </style>
 </head>
 <body>
-<header>
-  <h1>SALOPI <span>×</span> NISAR</h1>
-  <div class="sub">Listening for salt in radar echoes · team ε″ · NASA Space Apps 2026</div>
-  <div class="sp"></div>
-  <div class="seg" id="regionSeg"></div>
-</header>
-<main>
-  <aside id="side">
+<div id="map"></div>
+
+<div id="brand" class="card">
+  <h1>SALOPI<i>×</i>NISAR</h1>
+  <div class="tag">Listening for salt<br>in radar echoes</div>
+</div>
+
+<div id="regions" class="card"></div>
+
+<div id="panel" class="card">
+  <div id="tabs">
+    <button data-p="layers" class="on">Layers</button>
+    <button data-p="field">Field card</button>
+    <button data-p="evidence">Evidence</button>
+    <button data-p="about">About</button>
+  </div>
+  <div class="pane on" id="p-layers">
     <div id="modeBox"></div>
+    <div id="layers"></div>
+  </div>
+  <div class="pane" id="p-field">
+    <div id="probe"><h3>Field card</h3><p class="hint">Tap anywhere on the radar image to see how that spot changed across the season.</p></div>
+  </div>
+  <div class="pane" id="p-evidence">
+    <h3>Is it really salt?</h3>
+    <div class="big"><div><b>+4…+9°</b><span>model: salt crust</span></div><div><b>≈ 0°</b><span>model: moisture only</span></div></div>
+    <p><b>1 · Physics.</b> Our SALOPI soil model at NISAR's 1.26 GHz (Stogryn saline water + Dobson mixing + Bragg surface scattering). Salt explains <b>74%</b> of the HH–VV phase variance, moisture only <b>13%</b>.</p>
+    <img src="phase_model.png" alt="Model map of HH–VV phase over soil moisture and salt content">
+    <p style="margin-top:16px"><b>2 · Real NISAR data.</b> A natural experiment: the Great Rann of Kutch salt flat against non-saline Thar sand dunes. Zones are set by geography, only bare ground is used.</p>
+    <div class="big"><div><b>+5…+14°</b><span>salt flat vs sand, every date</span></div><div><b>77–90%</b><span>accuracy, phase alone</span></div></div>
+    <img src="evidence.png" alt="Salt flat phase shift on three dates and phase-only accuracy">
+    <ul>
+      <li>Same sign and size as the model predicted.</li>
+      <li><b>Not moisture:</b> NISAR's own soil-moisture product says the salt flat is <i>drier</i> than the dunes.</li>
+      <li><b>Control</b> (Khadir/Bela islands) flips sign between dates: no stable shift.</li>
+    </ul>
+  </div>
+  <div class="pane" id="p-about">
+    <h3>Why radar can hear salt</h3>
+    <p>Salt dissolved in soil water adds <b>ionic conductivity</b>, the imaginary part of permittivity, <b>ε″</b>. It changes the <b>phase between HH and VV</b> echoes far more than water does, so phase separates salt from moisture where amplitude cannot.</p>
+    <h3>Two modes</h3>
+    <ul>
+      <li><b>Global</b> (any dual-pol scene, HH+HV): flags land that is <i>wet</i> yet <i>bare all season</i>, typical for saline groundwater and failing crops.</li>
+      <li><b>Precision</b> (quad-pol): the HH–VV phase, the direct dielectric fingerprint of salt.</li>
+    </ul>
+    <h3>Honest limits</h3>
+    <ul>
+      <li><b>Provisional</b> NISAR products. Each scene has a constant phase offset (+61° Jun/Jul, −96° Oct), so phase is measured relative to dry Thar sand (ε″ ≈ 0).</li>
+      <li>Surface roughness also nudges phase; the salt flat is smoother than dunes. Not yet controlled.</li>
+      <li>The risk layer is a <b>screening</b> tool; field ECe samples are needed to calibrate it.</li>
+      <li>L-band sees salt weakly. Our long-term goal: a P-band receiver CubeSat (SALOPI).</li>
+    </ul>
+    <p>Data: NASA-ISRO NISAR L2 GCOV &amp; L3 SME2 (provisional), NASA Earthdata / ASF DAAC. Open-source Python + Leaflet. Team <b>ε″</b> · NASA Space Apps 2026.</p>
+    <div class="theme" id="themeSeg"><button data-t="auto" class="on">Auto</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div>
+  </div>
+</div>
 
-    <h2>Layer</h2>
-    <div class="layers" id="layers"></div>
-
-    <h2>Date</h2>
-    <input type="range" id="date" min="0" max="2" step="1" value="2">
-    <div class="dates" id="dateLabels"></div>
-    <div class="row" style="margin-top:10px"><span class="note">Opacity</span><input type="range" id="opacity" min="0" max="100" value="85"></div>
-    <div id="legend"></div>
-
-    <h2>Field card</h2>
-    <div id="probe"><div class="hint">Click anywhere on the radar image to see how that spot changed across the season.</div></div>
-
-    <h2>How it works</h2>
-    <details>
-      <summary>Why radar can see salt</summary>
-      <p>Salt dissolved in soil water adds an <b>ionic conductivity</b> term to the soil's permittivity (the imaginary part, ε″). Our physics model (Stogryn saline water + Dobson soil mixing + Fresnel reflection) shows the effect grows at <b>lower frequencies</b>: at L-band (NISAR, 1.25 GHz) salt changes the echo by ~0.4 dB, while moisture changes it by ~2 dB — so amplitude alone confuses salt with water.</p>
-      <p>The <b>phase difference between HH and VV</b> reacts to ε″ much more than to moisture. In our 240-case virtual experiment, phase carried 55% of the salt signal, amplitude carried 60% of the moisture signal.</p>
-    </details>
-    <details>
-      <summary>Two modes</summary>
-      <ul>
-        <li><b>Global mode</b> (any NISAR dual-pol scene, HH+HV): flags land that is <i>wet</i> (NISAR SME2 soil moisture) yet <i>stays bare</i> all season (low HV). Shallow saline groundwater and failing crops look exactly like this.</li>
-        <li><b>Precision mode</b> (quad-pol scenes): adds the HH–VV phase — the direct dielectric fingerprint of salt.</li>
-      </ul>
-    </details>
-    <details open>
-      <summary>Evidence: is it really salt?</summary>
-      <p><b>1 · Physics.</b> Our SALOPI model at NISAR's 1.26 GHz (Stogryn + Dobson + Bragg surface scattering): a salt crust shifts HH–VV phase by <b>+4…+9°</b>; moisture alone by only <b>−0.2°</b>. Salt explains 74% of phase variance, moisture 13%.</p>
-      <img src="phase_model.png" alt="Model map of HH–VV phase over moisture and salt" style="width:100%;border-radius:8px">
-      <p><b>2 · Real NISAR data, natural experiment.</b> Great Rann of Kutch salt flat vs non-saline Thar sand dunes (zones set by geography, bare pixels only):</p>
-      <img src="evidence.png" alt="Salt flat phase shift on three dates and phase-only accuracy" style="width:100%;border-radius:8px">
-      <ul>
-        <li>The salt flat sits <b>+9°, +14°, +5°</b> above sand on all three dates — same sign and size as the model.</li>
-        <li>It is <b>not moisture</b>: NISAR's own soil-moisture product says the salt flat is <i>drier</i> than the dunes.</li>
-        <li>Control (Khadir/Bela islands) flips sign between dates — no stable shift.</li>
-        <li>Phase alone tells salt flat from sand with <b>77–90% accuracy</b> (AUC 0.75–0.95).</li>
-      </ul>
-    </details>
-    <details>
-      <summary>Honest limits</summary>
-      <ul>
-        <li>These are <b>provisional</b> NISAR products. Each scene carries a constant HH–VV phase offset (+61° in June/July, −96° in October) from calibration still in progress, so we measure phase <b>relative to dry Thar sand dunes</b>, a natural target with ε″ ≈ 0.</li>
-        <li>Roughness and surface type also change the phase a little; the salt flat is smoother than the dunes. We control for vegetation (bare pixels only) and moisture, but not yet for roughness.</li>
-        <li>The risk layer is a <b>screening</b> indicator, not a salinity measurement. It needs field checks (ECe samples) to calibrate.</li>
-        <li>At L-band the salt effect is weak; our long-term goal is a P-band receiver (SALOPI CubeSat) that listens to existing satellite signals.</li>
-      </ul>
-    </details>
-    <p class="note" style="margin-top:14px">Data: NASA-ISRO NISAR L2 GCOV &amp; L3 SME2 (provisional), via NASA Earthdata / ASF DAAC. Processing: 200 m multilooking, open-source Python.</p>
-    <div class="row" style="margin-top:6px"><span class="note">Theme</span><div class="seg" id="themeSeg"><button data-t="auto" class="on">Auto</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div></div>
-  </aside>
-  <div id="map"></div>
-</main>
+<div id="timeline" class="card">
+  <div id="dates"></div>
+  <div id="legend"></div>
+  <label class="op">Opacity <input type="range" id="opacity" min="0" max="100" value="85"></label>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
 const CUBE_STEP = 0.006;
+const DIV = "linear-gradient(90deg,#105666,#7FA9B0,#F7F4D5,#E2B5AC,#9C4F45)";
 const LAYER_INFO = {
-  RGB:  {name:"Radar colour composite", desc:"Red = HH, green = HV (plants), blue = HH−HV (bare, smooth ground)", dated:true},
-  HV:   {name:"Vegetation (HV)", desc:"Cross-polarised echo: bright = crops, trees; dark = bare soil, water", dated:true,
-         legend:{grad:"linear-gradient(90deg,#000,#fff)", ticks:["−32 dB","−21","−10 dB"]}},
-  dHV:  {name:"Change since first date · HV", desc:"Blue = vegetation lost (harvest, crop failure); red = growth", dated:true, skipFirst:true,
-         legend:{grad:"linear-gradient(90deg,#053061,#4393c3,#f7f7f7,#d6604d,#67001f)", ticks:["−6 dB","0","+6 dB"]}},
-  dHH:  {name:"Change since first date · HH", desc:"Surface change: wetting, ploughing, flooding", dated:true, skipFirst:true,
-         legend:{grad:"linear-gradient(90deg,#053061,#4393c3,#f7f7f7,#d6604d,#67001f)", ticks:["−6 dB","0","+6 dB"]}},
-  SM:   {name:"Soil moisture (NISAR SME2)", desc:"Volumetric water content of the top soil", dated:true,
-         legend:{grad:"linear-gradient(90deg,#ffffd9,#7fcdbb,#1d91c0,#081d58)", ticks:["0.02","0.21","0.40 m³/m³"]}},
-  RISK: {name:"Salinization risk (screening)", desc:"Wet but bare all season. Shown: the riskiest 25% of land", dated:false,
-         legend:{grad:"linear-gradient(90deg,#ffffcc,#fd8d3c,#800026)", ticks:["top 25%","top 12%","top 1%"]}},
-  PHASE:{name:"HH–VV phase (salt fingerprint)", desc:"Relative to Thar sand dunes (natural zero). Model: salt +4…+9°, moisture ≈0°", dated:true,
-         legend:{grad:"linear-gradient(90deg,#2d004b,#8073ac,#f7f7f7,#e08214,#7f3b08)", ticks:["−25°","0°","+25°"]}},
-  SALT: {name:"Salt signature detected", desc:"Bare ground with phase ≥ +5° on EVERY date — salt, not a one-off wet spell", dated:false,
-         legend:{grad:"linear-gradient(90deg,#08306b,#08306b)", ticks:["flagged on all dates",""]}},
+  RGB:  {name:"Radar colour composite", desc:"Red HH · green HV (plants) · blue HH−HV (bare, smooth ground)", dated:true},
+  HV:   {name:"Vegetation (HV)", desc:"Bright = crops and trees; dark = bare soil or water", dated:true,
+         legend:{t:"HV backscatter", grad:"linear-gradient(90deg,#0A3323,#F7F4D5)", ticks:["−32 dB","−21","−10 dB"]}},
+  dHV:  {name:"Change · vegetation", desc:"Teal = plants lost (harvest, crop failure); rose = growth", dated:true, skipFirst:true,
+         legend:{t:"ΔHV since first date", grad:DIV, ticks:["−6 dB","0","+6 dB"]}},
+  dHH:  {name:"Change · surface", desc:"Wetting, ploughing, flooding", dated:true, skipFirst:true,
+         legend:{t:"ΔHH since first date", grad:DIV, ticks:["−6 dB","0","+6 dB"]}},
+  SM:   {name:"Soil moisture", desc:"NISAR SME2, top soil water content", dated:true,
+         legend:{t:"Soil moisture", grad:"linear-gradient(90deg,#F7F4D5,#839958,#105666,#0A3323)", ticks:["0.02","0.21","0.40 m³/m³"]}},
+  RISK: {name:"Salinization risk", desc:"Wet but bare all season — the riskiest 25% of land", dated:false,
+         legend:{t:"Risk percentile", grad:"linear-gradient(90deg,#F2D4CE,#D3968C,#7A3A33)", ticks:["top 25%","top 12%","top 1%"]}},
+  PHASE:{name:"HH–VV phase", desc:"Relative to Thar sand (natural zero). Model: salt +4…+9°, moisture ≈ 0°", dated:true,
+         legend:{t:"HH–VV phase vs sand", grad:DIV, ticks:["−25°","0°","+25°"]}},
+  SALT: {name:"Salt signature", desc:"Bare ground with phase ≥ +5° on every date: salt, not a passing wet spell", dated:false,
+         legend:{t:"Salt signature", grad:"linear-gradient(90deg,#9C4F45,#9C4F45)", ticks:["detected on all dates",""]}},
 };
 const MODE_TEXT = {
-  precision:{t:"Precision mode", p:"Quad-pol scene: HH, HV, VH, VV and the complex HH·VV* term. The HH–VV phase reveals the dielectric fingerprint of salt."},
-  global:{t:"Global mode", p:"Dual-pol scene (HH + HV), like most of NISAR's land coverage. Salinization risk from soil moisture + season-long vegetation."},
+  precision:{t:"Precision mode", p:"Quad-pol scene: HH, HV, VH, VV and the complex HH·VV* term. The phase reveals the dielectric fingerprint of salt."},
+  global:{t:"Global mode", p:"Dual-pol scene (HH + HV), like most of NISAR's land coverage. Risk from soil moisture and season-long vegetation."},
 };
+const REGION_LABEL = {rann:["Rann of Kutch","precision"], mirzachul:["Mirzachul","global"]};
 
 let META, region, layer = "RGB", dateIdx = 2, overlay = null, cubes = {}, marker = null;
-const map = L.map("map", {zoomControl:true, preferCanvas:true, attributionControl:true});
+const $ = s => document.querySelector(s);
+const map = L.map("map", {zoomControl:false, preferCanvas:true});
+L.control.zoom({position:"topright"}).addTo(map);
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   {maxZoom:17, attribution:"Basemap © Esri · Radar: NASA-ISRO NISAR"}).addTo(map);
 
-const $ = s => document.querySelector(s);
-const fmtDate = d => new Date(d.slice(0,4)+"-"+d.slice(4,6)+"-"+d.slice(6)).toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+const fmt = d => new Date(d.slice(0,4)+"-"+d.slice(4,6)+"-"+d.slice(6));
+const day = d => fmt(d).getDate();
+const mon = d => fmt(d).toLocaleDateString("en-GB",{month:"short"});
+const fmtDate = d => `${day(d)} ${mon(d)}`;
 
 function setTheme(t){
   if(t === "auto") document.documentElement.removeAttribute("data-theme");
@@ -841,50 +896,51 @@ function setTheme(t){
 document.querySelectorAll("#themeSeg button").forEach(b => b.onclick = () => setTheme(b.dataset.t));
 try{ const t = localStorage.getItem("theme"); if(t) setTheme(t) }catch(e){}
 
+function showTab(p){
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.p === p));
+  document.querySelectorAll(".pane").forEach(x => x.classList.toggle("on", x.id === "p-" + p));
+}
+document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => showTab(b.dataset.p));
+
 async function init(){
   META = await (await fetch("data/meta.json")).json();
-  const seg = $("#regionSeg");
-  for(const [k, r] of Object.entries(META.regions)){
+  for(const k of Object.keys(META.regions)){
     const b = document.createElement("button");
-    b.textContent = k === "rann" ? "Rann of Kutch · precision" : "Mirzachul · global";
-    b.dataset.k = k; b.onclick = () => selectRegion(k); seg.appendChild(b);
+    b.innerHTML = `${REGION_LABEL[k][0]}<small>${REGION_LABEL[k][1]} mode</small>`;
+    b.dataset.k = k; b.onclick = () => selectRegion(k); $("#regions").appendChild(b);
   }
-  $("#date").oninput = e => { dateIdx = +e.target.value; draw(); };
   $("#opacity").oninput = e => overlay && overlay.setOpacity(e.target.value/100);
   map.on("click", e => probe(e.latlng));
   selectRegion("mirzachul");
 }
 
 function selectRegion(k){
-  region = k; const R = META.regions[k];
-  document.querySelectorAll("#regionSeg button").forEach(b => b.classList.toggle("on", b.dataset.k === k));
-  const m = MODE_TEXT[R.mode];
-  $("#modeBox").innerHTML = `<div class="mode"><b>${m.t}</b> · ${R.title}<p>${m.p}</p></div>`;
+  region = k; const R = META.regions[k], m = MODE_TEXT[R.mode];
+  document.querySelectorAll("#regions button").forEach(b => b.classList.toggle("on", b.dataset.k === k));
+  $("#modeBox").innerHTML = `<div class="mode"><div class="k">${m.t}</div><b>${R.title}</b><p>${m.p}</p></div>`;
   if(!R.layers.includes(layer)) layer = "RGB";
-  const box = $("#layers"); box.innerHTML = "";
-  for(const L_ of R.layers){
-    const I = LAYER_INFO[L_];
-    box.insertAdjacentHTML("beforeend", `<label><input type="radio" name="layer" value="${L_}" ${L_===layer?"checked":""}><span>${I.name}<small>${I.desc}</small></span></label>`);
-  }
-  box.querySelectorAll("input").forEach(i => i.onchange = () => { layer = i.value; draw(); });
-  dateIdx = R.dates.length - 1; $("#date").max = R.dates.length - 1; $("#date").value = dateIdx;
-  map.fitBounds(R.bounds);
+  $("#layers").innerHTML = R.layers.map(L_ => `<label class="layer ${L_===layer?"on":""}" data-l="${L_}"><span class="dot"></span><span><b>${LAYER_INFO[L_].name}</b><small>${LAYER_INFO[L_].desc}</small></span></label>`).join("");
+  document.querySelectorAll(".layer").forEach(el => el.onclick = () => {
+    layer = el.dataset.l; document.querySelectorAll(".layer").forEach(x => x.classList.toggle("on", x === el)); draw();
+  });
+  dateIdx = R.dates.length - 1;
+  map.fitBounds(R.bounds, {paddingTopLeft: innerWidth > 860 ? [400, 90] : [0, 60], paddingBottomRight: innerWidth > 860 ? [20, 110] : [0, innerHeight*.5]});
   if(marker){ marker.remove(); marker = null; }
-  $("#probe").innerHTML = `<div class="hint">Click anywhere on the radar image to see how that spot changed across the season.</div>`;
-  loadCube(k);
-  draw();
+  $("#probe").innerHTML = `<h3>Field card</h3><p class="hint">Tap anywhere on the radar image to see how that spot changed across the season.</p>`;
+  loadCube(k); draw();
 }
 
 function draw(){
   const R = META.regions[region], I = LAYER_INFO[layer];
-  if(I.skipFirst && dateIdx === 0){ dateIdx = 1; $("#date").value = 1; }
-  $("#date").disabled = !I.dated;
-  $("#dateLabels").innerHTML = R.dates.map((d,i) => `<span class="${I.dated && i===dateIdx ? "on" : ""}">${fmtDate(d)}</span>`).join("");
+  if(I.skipFirst && dateIdx === 0) dateIdx = 1;
+  $("#dates").innerHTML = R.dates.map((d,i) => `<button data-i="${i}" class="${I.dated && i===dateIdx?"on":""}" ${!I.dated || (I.skipFirst && i===0) ? "disabled" : ""}><b>${day(d)}</b><small>${mon(d)}</small></button>`).join("");
+  document.querySelectorAll("#dates button").forEach(b => b.onclick = () => { dateIdx = +b.dataset.i; draw(); });
   const file = I.dated ? `${layer}_${R.dates[dateIdx]}.webp` : `${layer}.webp`;
-  const url = `data/${region}/${file}`;
   if(overlay) overlay.remove();
-  overlay = L.imageOverlay(url, R.bounds, {opacity: $("#opacity").value/100, interactive:false}).addTo(map);
-  $("#legend").innerHTML = I.legend ? `<div class="bar" style="background:${I.legend.grad}"></div><div class="ticks">${I.legend.ticks.map(t=>`<span>${t}</span>`).join("")}</div>` : "";
+  overlay = L.imageOverlay(`data/${region}/${file}`, R.bounds, {opacity: $("#opacity").value/100, interactive:false}).addTo(map);
+  $("#legend").innerHTML = I.legend
+    ? `<div class="t">${I.legend.t}</div><div class="bar" style="background:${I.legend.grad}"></div><div class="ticks">${I.legend.ticks.map(t=>`<span>${t}</span>`).join("")}</div>`
+    : `<div class="t">${I.name}</div><div class="ticks"><span>${I.desc}</span></div>`;
 }
 
 async function loadCube(k){
@@ -898,58 +954,58 @@ async function loadCube(k){
 function val(k, band, r, c){
   const R = META.regions[k], [H, W] = R.cube_shape, q = cubes[k][band*H*W + r*W + c];
   if(q === 255) return null;
-  const key = R.cube_order[band][1], [lo, hi] = META.quant[key];
+  const [lo, hi] = META.quant[R.cube_order[band][1]];
   return lo + q*(hi-lo)/250;
 }
 
 function probe(ll){
   const R = META.regions[region];
   if(!cubes[region]) return;
-  const [[lat0, lon0], [lat1, lon1]] = R.bounds, [H, W] = R.cube_shape;
+  const [[, lon0], [lat1]] = R.bounds, [H, W] = R.cube_shape;
   const r = Math.floor((lat1 - ll.lat)/CUBE_STEP), c = Math.floor((ll.lng - lon0)/CUBE_STEP);
   if(r < 0 || c < 0 || r >= H || c >= W) return;
   const rows = {};
   R.cube_order.forEach(([d, key], band) => { (rows[key] ||= {})[d] = val(region, band, r, c); });
+  showTab("field");
   if(!R.dates.some(d => rows.HH[d] !== null)){
-    $("#probe").innerHTML = `<div class="hint">No radar data at this spot (outside the NISAR swath). Try inside the coloured area.</div>`; return;
+    $("#probe").innerHTML = `<h3>Field card</h3><p class="hint">No radar data here (outside the NISAR swath). Try inside the coloured area.</p>`; return;
   }
-  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:7, color:"#fff", weight:2, fillColor:"#C4532A", fillOpacity:1}).addTo(map);
+  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:8, color:"#F7F4D5", weight:3, fillColor:"#D3968C", fillOpacity:1}).addTo(map);
   const keys = ["HH","HV","VV","SM","PHASE"].filter(k => rows[k]);
   const unit = {HH:"dB", HV:"dB", VV:"dB", SM:"m³/m³", PHASE:"°"};
-  const f = (k, v) => v === null ? "–" : (k === "SM" ? v.toFixed(2) : v.toFixed(1));
-  let html = `<div class="note">${ll.lat.toFixed(3)}° N, ${ll.lng.toFixed(3)}° E · ~600 m cell</div>
+  const name = {HH:"HH", HV:"HV", VV:"VV", SM:"Moisture", PHASE:"HH–VV phase"};
+  const f = (k, v) => v === null ? "–" : (k === "SM" ? v.toFixed(2) : (k === "PHASE" && v > 0 ? "+" : "") + v.toFixed(1));
+  let html = `<h3>${ll.lat.toFixed(3)}° N, ${ll.lng.toFixed(3)}° E</h3><p class="hint" style="margin:-4px 0 6px">~600 m cell · ${R.title}</p>
   <table><tr><th></th>${R.dates.map(d => `<th>${fmtDate(d)}</th>`).join("")}</tr>
-  ${keys.map(k => `<tr><td>${k === "PHASE" ? "HH–VV phase" : k === "SM" ? "Moisture" : k} <span class="note">${unit[k]}</span></td>${R.dates.map(d => `<td>${f(k, rows[k][d])}</td>`).join("")}</tr>`).join("")}
-  </table>`;
-  html += sparkline(R.dates.map(d => rows.HV[d]));
+  ${keys.map(k => `<tr><td>${name[k]} <span class="hint">${unit[k]}</span></td>${R.dates.map(d => `<td>${f(k, rows[k][d])}</td>`).join("")}</tr>`).join("")}</table>`;
+  html += sparkline(R.dates.map(d => rows.HV[d]), R.dates);
+  const v = [];
   const risk = rows.RISK.all;
-  const hvs = R.dates.map(d => rows.HV[d]).filter(v => v !== null);
-  const dHV = hvs.length > 1 ? hvs[hvs.length-1] - hvs[0] : null;
-  let v = [];
-  if(risk !== null){
-    const pctl = Math.round(risk*100);
-    const col = risk >= .9 ? "#800026" : risk >= .75 ? "#fd8d3c" : "var(--good)";
-    v.push(`<span class="chip" style="background:${col};color:#fff">Risk: ${pctl}th percentile</span>`);
+  if(R.mode === "global" && risk !== null){
+    const bg = risk >= .9 ? "#9C4F45" : risk >= .75 ? "#D3968C" : "#839958";
+    v.push(`<span class="chip" style="background:${bg};color:${risk >= .9 ? "#F7F4D5" : "#0A3323"}">Risk: ${Math.round(risk*100)}th percentile</span>`);
   }
+  const hvs = R.dates.map(d => rows.HV[d]).filter(x => x !== null);
+  const dHV = hvs.length > 1 ? hvs[hvs.length-1] - hvs[0] : null;
   if(dHV !== null) v.push(dHV < -2 ? "Vegetation dropped strongly → harvest or crop loss." : dHV > 2 ? "Vegetation grew during the season." : "Vegetation roughly stable.");
   if(rows.PHASE){
     const ph = R.dates.map(d => rows.PHASE[d]).filter(x => x !== null);
     const sig = rows.SALT ? rows.SALT.all : null;
-    if(sig !== null && sig >= 0.99) v.push(`<span class="chip" style="background:#08306b;color:#fff">Salt signature</span> Phase is ≥ +5° above dry sand on every date (${ph.map(x=>x.toFixed(0)+"°").join(", ")}). Our model gives +4…+9° for a salt crust and ≈0° for fresh moisture.`);
-    else if(ph.length) v.push(`HH–VV phase vs sand: ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}. No stable salt signature here.`);
+    if(sig !== null && sig >= 0.99) v.push(`<br><span class="chip" style="background:#9C4F45;color:#F7F4D5">Salt signature</span>Phase is ≥ +5° above dry sand on every date (${ph.map(x=>"+"+x.toFixed(0)+"°").join(", ")}). The model gives +4…+9° for a salt crust and ≈ 0° for fresh moisture.`);
+    else if(ph.length) v.push(`<br>Phase vs sand: ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}. No stable salt signature here.`);
   }
   html += `<div class="verdict">${v.join(" ")}</div>`;
   $("#probe").innerHTML = html;
 }
 
-function sparkline(vals){
+function sparkline(vals, dates){
   const ok = vals.filter(v => v !== null); if(ok.length < 2) return "";
-  const w = 300, h = 54, lo = Math.min(...ok) - 1, hi = Math.max(...ok) + 1;
-  const pts = vals.map((v,i) => v === null ? null : [12 + i*(w-24)/(vals.length-1), h - 10 - (v-lo)/(hi-lo)*(h-22)]).filter(Boolean);
-  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" style="margin-top:8px" aria-label="HV over the season">
-    <text x="0" y="10" font-size="10" fill="currentColor" opacity=".6">HV through the season</text>
-    <polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
-    ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="var(--accent)"/>`).join("")}</svg>`;
+  const w = 320, h = 70, lo = Math.min(...ok) - 1, hi = Math.max(...ok) + 1;
+  const pts = vals.map((v,i) => v === null ? null : [20 + i*(w-40)/(vals.length-1), h - 18 - (v-lo)/(hi-lo)*(h-34)]).filter(Boolean);
+  return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" style="margin-top:10px;color:var(--muted)" aria-label="HV through the season">
+    <text x="0" y="11" font-size="11" fill="currentColor">Vegetation (HV) through the season</text>
+    <polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="#D3968C" stroke-width="3" stroke-linecap="round"/>
+    ${pts.map((p,i) => `<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="#D3968C"/><text x="${p[0]}" y="${h-2}" font-size="10.5" fill="currentColor" text-anchor="middle">${fmtDate(dates[i])}</text>`).join("")}</svg>`;
 }
 
 init();
