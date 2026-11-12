@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SALOPI × NISAR</title>
+<title>ε″ · Salt from Space</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>/* Leaflet 1.9.4 (BSD-2) */
@@ -690,6 +690,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--ink);font:400 14px/1.5 'IBM Plex Sans',system-ui,sans-serif}
+button{font-family:'IBM Plex Sans',system-ui,sans-serif}
 .mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
 #map{position:fixed;inset:0;background:var(--map)}
 .leaflet-container{font:inherit;background:var(--map)}
@@ -702,26 +703,34 @@ body{background:var(--bg);color:var(--ink);font:400 14px/1.5 'IBM Plex Sans',sys
 .box{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow)}
 .lbl{font:500 10.5px 'IBM Plex Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 
+/* place labels */
+.plabel{background:none;border:0}
+.plabel span{display:inline-block;transform:translate(-50%,-50%);white-space:nowrap;font:500 12px 'IBM Plex Sans';color:#fff;text-shadow:0 0 3px #000,0 0 6px rgba(0,0,0,.8);pointer-events:none}
+.plabel.city span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;box-shadow:0 0 0 1.5px #0F1A2A;margin-right:5px;vertical-align:1px}
+.plabel.area span{font:500 11px 'IBM Plex Mono';letter-spacing:.12em;text-transform:uppercase;color:#FFF7D6}
+.plabel.water span{font-style:italic;color:#CFE8FF}
+
 /* top bar */
 #top{position:fixed;left:12px;right:12px;top:12px;z-index:1000;display:flex;align-items:stretch;gap:10px;pointer-events:none}
 #top > *{pointer-events:auto}
 #brand{display:flex;align-items:center;gap:12px;padding:8px 14px}
-#brand .logo{width:28px;height:28px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font:600 15px 'IBM Plex Mono'}
+#brand .logo{width:30px;height:30px;border-radius:6px;background:var(--accent);color:#fff;display:grid;place-items:center;font:600 15px 'IBM Plex Mono'}
 #brand h1{margin:0;font-size:16px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
-#brand h1 span{color:var(--faint);font-weight:400;margin:0 4px}
+#brand h1 span{color:var(--faint);font-weight:400}
 #brand .sub{font-size:11.5px;color:var(--muted);line-height:1.2}
 #top .sp{flex:1}
-#regions{display:flex;padding:3px;gap:2px}
-#regions button{border:0;background:transparent;color:var(--muted);font:500 13px 'IBM Plex Sans';padding:6px 12px;border-radius:5px;cursor:pointer;text-align:left;line-height:1.15}
-#regions button small{display:block;font:400 10px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
-#regions button.on{background:var(--accent-soft);color:var(--accent)}
-#regions button.on small{color:var(--accent)}
+.seg{display:flex;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);font:500 13px 'IBM Plex Sans';padding:6px 12px;border-radius:5px;cursor:pointer;text-align:left;line-height:1.15}
+.seg button small{display:block;font:400 10px 'IBM Plex Mono';letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+.seg button.on{background:var(--accent-soft);color:var(--accent)}
+.seg button.on small{color:var(--accent)}
+#lang button{font:500 12px 'IBM Plex Mono';padding:6px 9px}
 #tourBtn{border:0;background:var(--accent);color:#fff;font:600 13px 'IBM Plex Sans';padding:0 16px;border-radius:8px;cursor:pointer;box-shadow:var(--shadow)}
 
 /* panel */
-#panel{position:fixed;left:12px;top:68px;bottom:96px;width:356px;z-index:1000;display:flex;flex-direction:column;overflow:hidden}
-#tabs{display:flex;border-bottom:1px solid var(--line);padding:0 6px}
-#tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:500 13px 'IBM Plex Sans';padding:11px 2px 9px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+#panel{position:fixed;left:12px;top:68px;bottom:96px;width:372px;z-index:1000;display:flex;flex-direction:column;overflow:hidden}
+#tabs{display:flex;border-bottom:1px solid var(--line);padding:0 4px}
+#tabs button{flex:1;border:0;background:transparent;color:var(--muted);font:500 12.5px 'IBM Plex Sans';padding:11px 1px 9px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
 #tabs button.on{color:var(--ink);border-bottom-color:var(--accent)}
 .pane{display:none;overflow-y:auto;padding:14px 16px 20px;flex:1}
 .pane.on{display:block}
@@ -729,7 +738,7 @@ body{background:var(--bg);color:var(--ink);font:400 14px/1.5 'IBM Plex Sans',sys
 .mode b{display:block;font-size:14.5px;margin:2px 0}
 .mode p{margin:0;color:var(--muted);font-size:12.5px}
 .group{margin:14px 0 6px}
-.layer{display:grid;grid-template-columns:16px 1fr;gap:10px;padding:8px 8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
+.layer{display:grid;grid-template-columns:16px 1fr;gap:10px;padding:8px;border-radius:6px;cursor:pointer;border:1px solid transparent}
 .layer:hover{background:var(--panel-2)}
 .layer.on{background:var(--accent-soft);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
 .layer .rb{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--faint);margin-top:3px}
@@ -746,6 +755,10 @@ h3:first-child{margin-top:0}
 .kpi div{border:1px solid var(--line);border-radius:6px;padding:8px 10px;background:var(--panel-2)}
 .kpi b{display:block;font:500 20px 'IBM Plex Mono';color:var(--ink);line-height:1.2}
 .kpi span{font-size:11.5px;color:var(--muted)}
+.kpi.big b{font-size:24px}
+.who{display:grid;grid-template-columns:28px 1fr;gap:8px;align-items:start;margin:8px 0}
+.who i{font-style:normal;width:28px;height:28px;border-radius:6px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font:600 13px 'IBM Plex Mono'}
+.who p{margin:0}
 .hint{color:var(--muted);font-size:13px}
 table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
 td,th{padding:5px 4px;text-align:right;border-bottom:1px solid var(--line)}
@@ -762,21 +775,21 @@ th:first-child,td:first-child{text-align:left;font-family:'IBM Plex Sans'}
 .src a{color:var(--accent)}
 
 /* timeline */
-#timeline{position:fixed;left:380px;right:12px;bottom:28px;z-index:1000;padding:8px 12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#timeline{position:fixed;left:396px;right:12px;bottom:28px;z-index:1000;padding:8px 12px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 #dates{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
 #dates button{border:0;border-right:1px solid var(--line);background:var(--panel);color:var(--ink);padding:6px 12px;cursor:pointer;font:500 12.5px 'IBM Plex Mono'}
 #dates button:last-child{border-right:0}
 #dates button.on{background:var(--accent);color:#fff}
 #dates button:disabled{color:var(--faint);cursor:default;background:var(--panel-2)}
-#cmp{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 12.5px 'IBM Plex Sans';padding:6px 12px;border-radius:6px;cursor:pointer}
-#cmp.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
-#cmp:disabled{opacity:.4;cursor:default}
+.tbtn{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 12.5px 'IBM Plex Sans';padding:6px 12px;border-radius:6px;cursor:pointer}
+.tbtn.on{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.tbtn:disabled{opacity:.4;cursor:default}
 #legend{flex:1;min-width:200px}
 #legend .bar{height:8px;border-radius:2px;margin-top:3px}
 #legend .ticks{display:flex;justify-content:space-between;font:11px 'IBM Plex Mono';color:var(--muted);margin-top:2px}
 .op{display:flex;align-items:center;gap:8px}
 input[type=range]{accent-color:var(--accent);width:96px}
-#coords{position:fixed;left:380px;bottom:6px;z-index:1000;font:11px 'IBM Plex Mono';color:var(--muted);background:var(--panel);padding:1px 8px;border-radius:4px;border:1px solid var(--line)}
+#coords{position:fixed;left:396px;bottom:6px;z-index:1000;font:11px 'IBM Plex Mono';color:var(--muted);background:var(--panel);padding:1px 8px;border-radius:4px;border:1px solid var(--line)}
 
 /* compare */
 #divider{position:absolute;top:0;bottom:0;width:0;z-index:650;display:none;pointer-events:none}
@@ -794,13 +807,16 @@ input[type=range]{accent-color:var(--accent);width:96px}
 #tour .nav{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
 #tour button{border:1px solid var(--line);background:var(--panel);color:var(--ink);font:500 13px 'IBM Plex Sans';padding:6px 14px;border-radius:6px;cursor:pointer}
 #tour button.pri{background:var(--accent);color:#fff;border-color:var(--accent)}
+#tour button:disabled{opacity:.4}
 
-@media (min-width:861px){ #tour{left:calc(50% + 184px)} }
+@media (min-width:861px){ #tour{left:calc(50% + 192px)} }
 @media (max-width:860px){
   #brand .sub,#regions button small{display:none}
-  #brand{padding:6px 10px}#brand h1{font-size:14px}
-  #regions button{padding:6px 9px;font-size:12.5px}
-  #tourBtn{padding:0 10px;font-size:12.5px}
+  #brand{padding:6px 8px}#brand h1{font-size:14px}
+  #regions button{padding:6px 7px;font-size:12px}
+  #lang button{padding:6px 5px}
+  #tourBtn{padding:0 9px;font-size:12px}
+  #top{flex-wrap:wrap}
   #panel{left:0;right:0;bottom:0;top:auto;width:auto;height:44vh;border-radius:10px 10px 0 0}
   #timeline{left:8px;right:8px;bottom:calc(44vh + 8px);gap:8px;padding:6px 8px}
   .op,#coords{display:none}
@@ -815,116 +831,322 @@ input[type=range]{accent-color:var(--accent);width:96px}
 <div id="top">
   <div id="brand" class="box">
     <div class="logo">ε″</div>
-    <div><h1>SALOPI<span>×</span>NISAR</h1><div class="sub">Soil salinity from L-band SAR polarimetry</div></div>
+    <div><h1>ε″ <span>· Salt from Space</span></h1><div class="sub" data-t="sub"></div></div>
   </div>
   <div class="sp"></div>
-  <div id="regions" class="box"></div>
-  <button id="tourBtn">▶ Tour</button>
+  <div id="regions" class="box seg"></div>
+  <div id="lang" class="box seg"><button data-l="en">EN</button><button data-l="ru">RU</button><button data-l="uz">UZ</button></div>
+  <button id="tourBtn" data-t="tour"></button>
 </div>
 
 <div id="panel" class="box">
   <div id="tabs">
-    <button data-p="layers" class="on">Layers</button>
-    <button data-p="field">Inspect</button>
-    <button data-p="evidence">Evidence</button>
-    <button data-p="about">Method</button>
+    <button data-p="layers" class="on" data-t="tab_layers"></button>
+    <button data-p="field" data-t="tab_field"></button>
+    <button data-p="evidence" data-t="tab_evidence"></button>
+    <button data-p="impact" data-t="tab_impact"></button>
+    <button data-p="about" data-t="tab_method"></button>
   </div>
-  <div class="pane on" id="p-layers">
-    <div id="modeBox"></div>
-    <div id="layers"></div>
-  </div>
+  <div class="pane on" id="p-layers"><div id="modeBox"></div><div id="layers"></div></div>
   <div class="pane" id="p-field"><div id="probe"></div></div>
-  <div class="pane" id="p-evidence">
-    <h3>Precision mode · is the phase signal salt?</h3>
-    <div class="kpi"><div><b>+4…+9°</b><span>model, salt crust vs dry sand</span></div><div><b>−0.2°</b><span>model, moisture 0.05→0.35</span></div></div>
-    <p><b>Forward model.</b> SALOPI soil dielectric model at 1.257 GHz (Stogryn saline water + Dobson mixing) with first-order Bragg (SPM) backscatter. Roughness cancels in the SPM co-pol phase. Over 20 000 random soils, log-salinity explains <b>74%</b> of HH–VV phase variance, moisture <b>13%</b>, incidence angle <b>6%</b>.</p>
-    <img src="phase_model.png" alt="Modelled HH–VV phase over soil moisture and salt content">
-    <p style="margin-top:14px"><b>Natural experiment on NISAR quad-pol data.</b> Great Rann of Kutch salt flat vs non-saline Thar dunes; zones defined geographically; bare-surface pixels only (HV−HH &lt; −5 dB, above noise).</p>
-    <div class="kpi"><div><b>+5…+14°</b><span>salt flat vs sand, all 3 dates</span></div><div><b>0.77–0.90</b><span>balanced accuracy, phase only</span></div></div>
-    <img src="evidence.png" alt="Observed salt-flat phase shift on three dates and phase-only separability">
-    <ul>
-      <li>Sign and magnitude agree with the model.</li>
-      <li>Not moisture: NISAR SME2 retrieves the salt flat as <i>drier</i> than the dunes.</li>
-      <li>Control (Khadir/Bela islands): sign changes between dates.</li>
-    </ul>
-    <h3>Global mode · does the risk index point at known saline land?</h3>
-    <div class="kpi"><div><b>35%</b><span>Mirzachul land in top-risk class</span></div><div><b>13%</b><span>same class, whole scene</span></div></div>
-    <p>The index flags the Mirzachul (Hungry Steppe) irrigation zone <b>2.6×</b> more often than the scene average. In Syrdarya region 99.1% of irrigated land was rated slightly-to-moderately saline (MAWR 2003, cited in JIRCAS Working Report 88).</p>
-    <p class="src">Source: <a href="https://jircas.repo.nii.ac.jp/record/2000230/files/jircas_working_report88-_9-21.pdf" target="_blank" rel="noopener">JIRCAS Working Report 88</a></p>
-  </div>
-  <div class="pane" id="p-about">
-    <h3>Physical basis</h3>
-    <p>Dissolved salt adds ionic conductivity σ to soil water, raising the imaginary permittivity <span class="mono">ε″ = σ/(2πfε₀)</span>. A complex ε rotates the phase between HH and VV backscatter; water mainly raises ε′, which changes amplitude but hardly the phase. Phase therefore separates salt from moisture where amplitude cannot.</p>
-    <h3>Processing</h3>
-    <ul>
-      <li>NISAR L2 GCOV (20 m), 10×10 multilook → 200 m. Complex HH·VV* averaged before taking the angle.</li>
-      <li>Phase referenced to dry Thar dunes (ε″ ≈ 0) to remove the per-scene calibration offset of provisional products (+61° Jun/Jul, −96° Oct).</li>
-      <li>Risk = P(soil moisture) × (1 − P(season-max HV)), P = percentile within scene; open water removed.</li>
-      <li>Salt signature = bare surface with phase ≥ +5° on every available date (≥ 2 dates).</li>
-    </ul>
-    <h3>Limitations</h3>
-    <ul>
-      <li>Provisional products; one quad-pol site.</li>
-      <li>Roughness differences (smooth crust vs dunes) not yet separated.</li>
-      <li>Risk is a screening index; calibration needs field ECe samples.</li>
-      <li>L-band sensitivity to salt is weak; the SALOPI concept targets P-band (250–380 MHz) signals of opportunity.</li>
-    </ul>
-    <p class="src">Data: NASA-ISRO NISAR L2 GCOV, L3 SME2 (provisional), NASA Earthdata / ASF DAAC. Code: MIT licence. Team ε″ · NASA Space Apps Challenge 2026.</p>
-    <div class="theme" id="themeSeg"><button data-t="auto" class="on">Auto</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div>
-  </div>
+  <div class="pane" id="p-evidence"></div>
+  <div class="pane" id="p-impact"></div>
+  <div class="pane" id="p-about"></div>
 </div>
 
 <div id="timeline" class="box">
-  <div><div class="lbl">Acquisition</div><div id="dates" style="margin-top:3px"></div></div>
-  <button id="cmp" title="Compare first and selected date">⇆ Compare</button>
+  <div><div class="lbl" data-t="acq"></div><div id="dates" style="margin-top:3px"></div></div>
+  <button id="cmp" class="tbtn"></button>
+  <button id="lblBtn" class="tbtn on"></button>
   <div id="legend"></div>
-  <label class="op"><span class="lbl">Opacity</span><input type="range" id="opacity" min="0" max="100" value="90"></label>
+  <label class="op"><span class="lbl" data-t="opacity"></span><input type="range" id="opacity" min="0" max="100" value="90"></label>
 </div>
 <div id="coords">—</div>
 
 <div id="tour" class="box">
   <div class="n" id="tourN"></div><h4 id="tourT"></h4><p id="tourP"></p>
-  <div class="nav"><button id="tourX">Close</button><button id="tourB">Back</button><button id="tourF" class="pri">Next</button></div>
+  <div class="nav"><button id="tourX"></button><button id="tourB"></button><button id="tourF" class="pri"></button></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-const CUBE_STEP = 0.006;
-const RDBU = "linear-gradient(90deg,#053061,#2166ac,#92c5de,#f7f7f7,#f4a582,#b2182b,#67001f)";
-const LAYER_INFO = {
-  RGB:  {g:"Backscatter", name:"Pauli-like RGB", desc:"R = HH, G = HV, B = HH−HV", dated:true, cmp:true},
-  HV:   {g:"Backscatter", name:"HV backscatter σ⁰", desc:"Volume scattering: vegetation", dated:true, cmp:true,
-         legend:{t:"σ⁰ HV", grad:"linear-gradient(90deg,#000,#fff)", ticks:["−32 dB","−21","−10 dB"]}},
-  dHV:  {g:"Change", name:"ΔHV since first date", desc:"Negative = vegetation loss (harvest, crop failure)", dated:true, skipFirst:true,
-         legend:{t:"ΔHV", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
-  dHH:  {g:"Change", name:"ΔHH since first date", desc:"Surface change: wetting, tillage, flooding", dated:true, skipFirst:true,
-         legend:{t:"ΔHH", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
-  SM:   {g:"Soil", name:"Soil moisture (SME2)", desc:"NISAR L3 product, 200 m", dated:true, cmp:true,
-         legend:{t:"mᵥ", grad:"linear-gradient(90deg,#440154,#3b528b,#21918c,#5ec962,#fde725)", ticks:["0.02","0.21","0.40 m³/m³"]}},
-  RISK: {g:"Salinity", name:"Salinization risk index", desc:"Wet yet bare all season; top 30% shown", dated:false,
-         legend:{t:"Risk percentile", grad:"linear-gradient(90deg,#fcfdbf,#fc8961,#b73779,#51127c,#000004)", ticks:["P70","P85","P100"]}},
-  PHASE:{g:"Salinity", name:"HH–VV phase difference", desc:"Referenced to dry Thar dunes", dated:true, cmp:true,
-         legend:{t:"φ(HH·VV*) − φ_sand", grad:RDBU, ticks:["−25°","0°","+25°"]}},
-  SALT: {g:"Salinity", name:"Salt signature", desc:"Bare surface, φ ≥ +5° on every date", dated:false,
-         legend:{t:"Salt signature", grad:"linear-gradient(90deg,#E4572E,#E4572E)", ticks:["detected on all dates",""]}},
-};
-const MODE_TEXT = {
-  precision:{t:"Precision mode · quad-pol", p:"HH, HV, VH, VV + complex HH·VV*. Phase-based salt detection."},
-  global:{t:"Global mode · dual-pol", p:"HH + HV + SME2 moisture. Change detection and salinization risk screening."},
-};
-const REGION_LABEL = {mirzachul:["Mirzachul, UZ","global · DH"], rann:["Rann of Kutch","precision · QP"]};
+/* ======================= TEXT (EN / RU / UZ) ======================= */
+const SRC_JIRCAS = `<a href="https://jircas.repo.nii.ac.jp/record/2000230/files/jircas_working_report88-_9-21.pdf" target="_blank" rel="noopener">JIRCAS Working Report 88</a>`;
+const SRC_FAO = `<a href="https://www.fao.org/global-soil-partnership/resources/highlights/detail/en/c/1730089/" target="_blank" rel="noopener">FAO, Global Status of Salt-Affected Soils (2024)</a>`;
+const SRC_QADIR = `<a href="https://doi.org/10.1111/1477-8947.12054" target="_blank" rel="noopener">Qadir et al. 2014, Natural Resources Forum</a>`;
 
-const TOUR = [
-  {r:"mirzachul", l:"RGB", d:2, t:"NISAR over Uzbekistan", p:"An L-band radar scene from 13 Oct 2026 covering Tashkent, the Syrdarya valley and the <b>Mirzachul (Hungry Steppe)</b> irrigation zone. Green = vegetation, purple = bare smooth ground."},
-  {r:"mirzachul", l:"dHV", d:2, c:[40.45,68.6], z:10, t:"A season of change", p:"HV change June → October. <b>Blue</b> = vegetation lost: the cotton and wheat harvest. Bare soil after harvest is exactly when salt is easiest to see."},
-  {r:"mirzachul", l:"RISK", c:[40.55,68.55], z:10, t:"Where salt is likely", p:"Land that stays <b>wet</b> (NISAR soil moisture) but <b>bare</b> all season. <b>35%</b> of Mirzachul falls in the top-risk class vs 13% scene-wide. Syrdarya region: 99% of irrigated land is slightly-to-moderately saline."},
-  {r:"rann", l:"RGB", d:1, t:"Precision mode: Rann of Kutch", p:"A quad-pol scene over one of the world's largest salt flats (dark, centre) and the non-saline sand dunes of the Thar desert (north)."},
-  {r:"rann", l:"PHASE", d:1, c:[24.08,70.1], z:9, t:"The salt fingerprint", p:"HH–VV phase relative to the dunes. Our physics model predicts <b>+4…+9°</b> for a salt crust and ≈0° for wet soil. The salt flat reads <b>+5…+14°</b> on all three dates."},
-  {r:"rann", l:"SALT", c:[24.17,69.6], z:10, t:"Persistent salt signature", p:"Bare ground whose phase stays ≥ +5° on every date: not a passing rain, but a permanent dielectric property — salt."},
-  {tab:"evidence", t:"How sure are we?", p:"Phase alone separates salt flat from sand with <b>77–90%</b> accuracy, and the moisture product rules out water as the cause. Full evidence in the panel."},
+const TX = {
+en:{
+  sub:"Soil salinity from L-band SAR polarimetry", tour:"▶ Tour",
+  tab_layers:"Layers", tab_field:"Inspect", tab_evidence:"Evidence", tab_impact:"Impact", tab_method:"Method",
+  acq:"Acquisition", opacity:"Opacity", cmp:"⇆ Compare", labels:"Labels", close:"Close", back:"Back", next:"Next", finish:"Finish", step:"Step",
+  theme:["Auto","Light","Dark"],
+  region:{mirzachul:["Mirzachul, UZ","global · DH","Mirzachul & Syrdarya (Uzbekistan)"], rann:["Rann of Kutch","precision · QP","Rann of Kutch / Thar (Pakistan–India)"]},
+  mode:{precision:["Precision mode · quad-pol","HH, HV, VH, VV + complex HH·VV*. Phase-based salt detection."], global:["Global mode · dual-pol","HH + HV + SME2 moisture. Change detection and salinization risk screening."]},
+  groups:{Backscatter:"Backscatter", Change:"Change", Soil:"Soil", Salinity:"Salinity"},
+  layers:{
+    RGB:["Pauli-like RGB","R = HH, G = HV, B = HH−HV"], HV:["HV backscatter σ⁰","Volume scattering: vegetation"],
+    dHV:["ΔHV since first date","Negative = vegetation loss (harvest, crop failure)"], dHH:["ΔHH since first date","Surface change: wetting, tillage, flooding"],
+    SM:["Soil moisture (SME2)","NISAR L3 product, 200 m"], RISK:["Salinization risk index","Wet yet bare all season; top 30% shown"],
+    PHASE:["HH–VV phase difference","Referenced to dry Thar dunes"], SALT:["Salt signature","Bare surface, φ ≥ +5° on every date"]},
+  ticks:{RISK:["P70","P85","P100"], SALT:["detected on all dates",""]}, leg:{RISK:"Risk percentile", SALT:"Salt signature"},
+  probe_empty:"<h3>Inspect a location</h3><p class='hint'>Click the radar image to read σ⁰, soil moisture and phase for a ~600 m cell on every acquisition date.</p>",
+  probe_nodata:"<h3>No data</h3><p class='hint'>Outside the NISAR swath or masked. Click inside the radar image.</p>",
+  cell:"Cell ~600 m", sm:"mᵥ, m³/m³", dphi:"Δφ vs sand, °",
+  risk_hi:"Wet yet sparsely vegetated through the season — candidate salt-affected land.", risk_lo:"No salinization symptom from moisture/vegetation.",
+  hv_loss:"Strong vegetation loss: harvest or crop failure.", hv_gain:"Vegetation growth during the season.", hv_flat:"Vegetation roughly stable.",
+  salt_sig:"SALT SIGNATURE", salt_txt:"Δφ ≥ +5° on every date. Model: salt crust +4…+9°, moisture ≈ 0°.", no_sig:"NO STABLE SIGNATURE",
+  tourSteps:[
+    ["NISAR over Uzbekistan","An L-band radar scene from 13 Oct 2026 covering Tashkent, the Syrdarya valley and the <b>Mirzachul (Hungry Steppe)</b> irrigation zone. Green = vegetation, purple = bare smooth ground."],
+    ["A season of change","HV change June → October. <b>Blue</b> = vegetation lost: the cotton and wheat harvest. Bare soil after harvest is exactly when salt is easiest to see."],
+    ["Where salt is likely","Land that stays <b>wet</b> (NISAR soil moisture) but <b>bare</b> all season. <b>35%</b> of Mirzachul falls in the top-risk class vs 13% scene-wide. Syrdarya region: 99% of irrigated land is slightly-to-moderately saline."],
+    ["Precision mode: Rann of Kutch","A quad-pol scene over one of the world's largest salt flats (dark, centre) and the non-saline sand dunes of the Thar desert (north)."],
+    ["The salt fingerprint","HH–VV phase relative to the dunes. Our physics model predicts <b>+4…+9°</b> for a salt crust and ≈0° for wet soil. The salt flat reads <b>+5…+14°</b> on all three dates."],
+    ["Persistent salt signature","Bare ground whose phase stays ≥ +5° on every date: not a passing rain, but a permanent dielectric property — salt."],
+    ["How sure are we?","Phase alone separates salt flat from sand with <b>77–90%</b> accuracy. Moisture and surface roughness do not explain the shift. Full evidence in the panel."]],
+  evidence:`
+    <h3>Precision mode · is the phase signal salt?</h3>
+    <div class="kpi"><div><b>+4…+9°</b><span>model, salt crust vs dry sand</span></div><div><b>−0.2°</b><span>model, moisture 0.05→0.35</span></div></div>
+    <p><b>Forward model.</b> Soil dielectric model at 1.257 GHz (Stogryn saline water + Dobson mixing) with first-order Bragg (SPM) backscatter. Over 20 000 random soils, log-salinity explains <b>74%</b> of HH–VV phase variance, moisture <b>13%</b>, incidence angle <b>6%</b>.</p>
+    <img src="phase_model.png" alt="Modelled HH–VV phase over soil moisture and salt content">
+    <p style="margin-top:14px"><b>Natural experiment on NISAR quad-pol data.</b> Great Rann of Kutch salt flat vs non-saline Thar dunes; zones defined geographically; bare-surface pixels only.</p>
+    <div class="kpi"><div><b>+5…+14°</b><span>salt flat vs sand, all 3 dates</span></div><div><b>0.77–0.90</b><span>balanced accuracy, phase only</span></div></div>
+    <img src="evidence.png" alt="Observed salt-flat phase shift on three dates and phase-only separability">
+    <ul>
+      <li>Sign and magnitude agree with the model.</li>
+      <li><b>Not moisture:</b> NISAR SME2 retrieves the salt flat as <i>drier</i> than the dunes.</li>
+      <li><b>Not roughness:</b> comparing salt-flat and sand pixels of equal roughness (same depolarisation), the shift stays <b>+8°, +12°, +4°</b>.</li>
+      <li><b>Control</b> (Khadir/Bela islands): sign changes between dates.</li>
+    </ul>
+    <h3>Global mode · does the risk index point at known saline land?</h3>
+    <div class="kpi"><div><b>35%</b><span>Mirzachul land in top-risk class</span></div><div><b>13%</b><span>same class, whole scene</span></div></div>
+    <p>The index flags the Mirzachul (Hungry Steppe) irrigation zone <b>2.6×</b> more often than the scene average. In Syrdarya region 99.1% of irrigated land was rated slightly-to-moderately saline.</p>
+    <p class="src">Source: ${SRC_JIRCAS}</p>`,
+  impact:`
+    <h3>Why it matters</h3>
+    <div class="kpi big"><div><b>1.4 bn ha</b><span>salt-affected land worldwide, 10.7% of all land</span></div><div><b>+1 bn ha</b><span>more at risk from climate change and mismanagement</span></div></div>
+    <div class="kpi big"><div><b>$27 bn</b><span>crop losses per year in salt-degraded irrigated land</span></div><div><b>−70%</b><span>yield loss for rice or beans in the worst-hit areas</span></div></div>
+    <div class="kpi big"><div><b>&gt;50%</b><span>of Uzbekistan's irrigated land is saline</span></div><div><b>99%</b><span>of irrigated land in Syrdarya region (Mirzachul)</span></div></div>
+    <p>Salt is usually seen only when a white crust appears — after the harvest is lost. Radar phase can flag it earlier, everywhere NISAR flies: all land on Earth every 12 days, free and open.</p>
+    <h3>Who would use it</h3>
+    <div class="who"><i>1</i><p><b>Farmers and water user associations</b> — know which fields need leaching or salt-tolerant crops before sowing.</p></div>
+    <div class="who"><i>2</i><p><b>Ministries of agriculture and water</b> — target drainage repair where salt is spreading, not where it is already visible.</p></div>
+    <div class="who"><i>3</i><p><b>FAO and development banks</b> — monitor salinity trends across countries with one consistent, free method.</p></div>
+    <h3>Next steps</h3>
+    <ul><li>Run on every NISAR quad-pol site in irrigated regions: Central Asia, Indus, Middle East, Australia, California.</li><li>Calibrate the risk index with field ECe samples.</li><li>Seasonal alerts when a field's salt signature appears.</li></ul>
+    <p class="src">Sources: ${SRC_FAO}; ${SRC_QADIR}; ${SRC_JIRCAS}</p>`,
+  method:`
+    <h3>Physical basis</h3>
+    <p>Dissolved salt adds ionic conductivity σ to soil water, raising the imaginary permittivity <span class="mono">ε″ = σ/(2πfε₀)</span> — hence our name. A complex ε rotates the phase between HH and VV backscatter; water mainly raises ε′, which changes amplitude but hardly the phase. Phase therefore separates salt from moisture where amplitude cannot.</p>
+    <h3>Processing</h3>
+    <ul>
+      <li>NISAR L2 GCOV (20 m), 10×10 multilook → 200 m. Complex HH·VV* averaged before taking the angle.</li>
+      <li>Phase referenced to dry Thar dunes (ε″ ≈ 0), removing the per-scene calibration offset of provisional products (+61° Jun/Jul, −96° Oct).</li>
+      <li>Risk = P(soil moisture) × (1 − P(season-max HV)), P = percentile within scene; open water removed.</li>
+      <li>Salt signature = bare surface with phase ≥ +5° on every available date (≥ 2 dates).</li>
+    </ul>
+    <h3>Limitations</h3>
+    <ul>
+      <li>Provisional products; one quad-pol site so far.</li>
+      <li>Risk is a screening index; calibration needs field ECe samples.</li>
+      <li>L-band sensitivity to salt is modest; the method works best on bare soil.</li>
+    </ul>
+    <p class="src">Data: NASA-ISRO NISAR L2 GCOV, L3 SME2 (provisional), NASA Earthdata / ASF DAAC. Code: MIT licence. Team ε″ · NASA Space Apps Challenge 2026.</p>`,
+},
+ru:{
+  sub:"Засолённость почв по поляриметрии радара L-диапазона", tour:"▶ Тур",
+  tab_layers:"Слои", tab_field:"Точка", tab_evidence:"Проверка", tab_impact:"Польза", tab_method:"Метод",
+  acq:"Дата съёмки", opacity:"Прозрачность", cmp:"⇆ Сравнить", labels:"Подписи", close:"Закрыть", back:"Назад", next:"Далее", finish:"Готово", step:"Шаг",
+  theme:["Авто","Светлая","Тёмная"],
+  region:{mirzachul:["Мирзачуль","глобальный · DH","Мирзачуль и Сырдарья (Узбекистан)"], rann:["Ранн Кач","точный · QP","Ранн Кач / Тар (Пакистан–Индия)"]},
+  mode:{precision:["Точный режим · 4 поляризации","HH, HV, VH, VV и комплексный HH·VV*. Поиск соли по фазе."], global:["Глобальный режим · 2 поляризации","HH + HV + влажность SME2. Изменения за сезон и оценка риска засоления."]},
+  groups:{Backscatter:"Радарный сигнал", Change:"Изменения", Soil:"Почва", Salinity:"Засоление"},
+  layers:{
+    RGB:["Цветной радарный снимок","R = HH, G = HV, B = HH−HV"], HV:["Сигнал HV σ⁰","Объёмное рассеяние: растительность"],
+    dHV:["ΔHV с первой даты","Минус = растительность пропала (уборка, гибель посевов)"], dHH:["ΔHH с первой даты","Изменение поверхности: полив, вспашка, затопление"],
+    SM:["Влажность почвы (SME2)","Продукт NISAR L3, 200 м"], RISK:["Индекс риска засоления","Влажно, но голо весь сезон; показаны верхние 30%"],
+    PHASE:["Разность фаз HH–VV","Относительно сухих песков Тара"], SALT:["Сигнатура соли","Голая почва, φ ≥ +5° на каждой дате"]},
+  ticks:{RISK:["P70","P85","P100"], SALT:["на всех датах",""]}, leg:{RISK:"Перцентиль риска", SALT:"Сигнатура соли"},
+  probe_empty:"<h3>Выберите точку</h3><p class='hint'>Нажмите на радарный снимок, чтобы увидеть σ⁰, влажность и фазу для участка ~600 м на каждую дату.</p>",
+  probe_nodata:"<h3>Нет данных</h3><p class='hint'>Вне полосы съёмки NISAR. Нажмите внутри радарного снимка.</p>",
+  cell:"Участок ~600 м", sm:"Влажность, м³/м³", dphi:"Δφ к песку, °",
+  risk_hi:"Влажно, но почти без растений весь сезон — вероятно засолённая земля.", risk_lo:"Признаков засоления по влажности и растительности нет.",
+  hv_loss:"Сильная потеря растительности: уборка или гибель посевов.", hv_gain:"Растительность выросла за сезон.", hv_flat:"Растительность почти не менялась.",
+  salt_sig:"СИГНАТУРА СОЛИ", salt_txt:"Δφ ≥ +5° на каждой дате. Модель: солевая корка +4…+9°, влажность ≈ 0°.", no_sig:"НЕТ УСТОЙЧИВОЙ СИГНАТУРЫ",
+  tourSteps:[
+    ["NISAR над Узбекистаном","Радарный снимок L-диапазона от 13 октября 2026: Ташкент, долина Сырдарьи и орошаемая зона <b>Мирзачуля (Голодной степи)</b>. Зелёное — растительность, фиолетовое — голая гладкая почва."],
+    ["Сезон перемен","Изменение HV с июня по октябрь. <b>Синее</b> — растительность пропала: убрали хлопок и пшеницу. Голая почва после уборки — лучший момент, чтобы увидеть соль."],
+    ["Где вероятна соль","Земля, которая весь сезон <b>влажная</b> (влажность NISAR), но <b>голая</b>. В Мирзачуле в зону высокого риска попало <b>35%</b> земли, по снимку в среднем — 13%. В Сырдарьинской области засолено 99% орошаемых земель."],
+    ["Точный режим: Ранн Кач","Снимок с четырьмя поляризациями над одним из крупнейших солончаков мира (тёмный, в центре) и незасолёнными песками пустыни Тар (север)."],
+    ["Отпечаток соли","Фаза HH–VV относительно песков. Модель предсказывает <b>+4…+9°</b> для солевой корки и ≈0° для влажной почвы. На солончаке <b>+5…+14°</b> на всех трёх датах."],
+    ["Устойчивая сигнатура соли","Голая земля, где фаза ≥ +5° на каждой дате: это не разовый дождь, а постоянное свойство почвы — соль."],
+    ["Насколько мы уверены?","По одной фазе солончак отличается от песка с точностью <b>77–90%</b>. Ни влажность, ни шероховатость сдвиг не объясняют. Подробности — в панели."]],
+  evidence:`
+    <h3>Точный режим · это правда соль?</h3>
+    <div class="kpi"><div><b>+4…+9°</b><span>модель: солевая корка против сухого песка</span></div><div><b>−0,2°</b><span>модель: влажность 0,05→0,35</span></div></div>
+    <p><b>Физическая модель.</b> Диэлектрическая модель почвы на 1,257 ГГц (солёная вода по Стогрину + смешение по Добсону) и брэгговское рассеяние (SPM). На 20 000 случайных почв соль объясняет <b>74%</b> разброса фазы HH–VV, влажность — <b>13%</b>, угол падения — <b>6%</b>.</p>
+    <img src="phase_model.png" alt="Модельная фаза HH–VV в зависимости от влажности и солёности">
+    <p style="margin-top:14px"><b>Природный эксперимент на снимках NISAR.</b> Солончак Большой Ранн Кач против незасолённых песков Тара; зоны заданы по географии; только голая почва.</p>
+    <div class="kpi"><div><b>+5…+14°</b><span>солончак против песка, все 3 даты</span></div><div><b>0,77–0,90</b><span>точность по одной фазе</span></div></div>
+    <img src="evidence.png" alt="Сдвиг фазы солончака по трём датам и точность разделения">
+    <ul>
+      <li>Знак и величина совпадают с моделью.</li>
+      <li><b>Не влага:</b> по данным NISAR SME2 солончак даже <i>суше</i> песков.</li>
+      <li><b>Не шероховатость:</b> если сравнивать участки солончака и песка с одинаковой шероховатостью, сдвиг остаётся <b>+8°, +12°, +4°</b>.</li>
+      <li><b>Контроль</b> (острова Кхадир/Бела): знак меняется от даты к дате.</li>
+    </ul>
+    <h3>Глобальный режим · совпадает ли риск с известными засолёнными землями?</h3>
+    <div class="kpi"><div><b>35%</b><span>земли Мирзачуля в зоне высокого риска</span></div><div><b>13%</b><span>то же по всему снимку</span></div></div>
+    <p>Индекс отмечает орошаемую зону Мирзачуля (Голодной степи) в <b>2,6 раза</b> чаще среднего по снимку. В Сырдарьинской области 99,1% орошаемых земель засолены слабо или средне.</p>
+    <p class="src">Источник: ${SRC_JIRCAS}</p>`,
+  impact:`
+    <h3>Почему это важно</h3>
+    <div class="kpi big"><div><b>1,4 млрд га</b><span>засолённых земель в мире, 10,7% всей суши</span></div><div><b>+1 млрд га</b><span>под угрозой из-за климата и неправильного полива</span></div></div>
+    <div class="kpi big"><div><b>$27 млрд</b><span>потерь урожая в год на засолённых орошаемых землях</span></div><div><b>−70%</b><span>урожая риса или бобов в самых пострадавших районах</span></div></div>
+    <div class="kpi big"><div><b>&gt;50%</b><span>орошаемых земель Узбекистана засолены</span></div><div><b>99%</b><span>орошаемых земель Сырдарьинской области (Мирзачуль)</span></div></div>
+    <p>Соль обычно замечают, только когда выступает белая корка — когда урожай уже потерян. Фаза радара может показать её раньше, везде, где летает NISAR: вся суша Земли каждые 12 дней, бесплатно и открыто.</p>
+    <h3>Кому это нужно</h3>
+    <div class="who"><i>1</i><p><b>Фермерам и ассоциациям водопользователей</b> — знать до посева, где нужна промывка или солеустойчивые культуры.</p></div>
+    <div class="who"><i>2</i><p><b>Министерствам сельского и водного хозяйства</b> — чинить дренаж там, где соль распространяется, а не там, где она уже видна.</p></div>
+    <div class="who"><i>3</i><p><b>FAO и банкам развития</b> — следить за засолением по всем странам одним бесплатным методом.</p></div>
+    <h3>Что дальше</h3>
+    <ul><li>Запустить на всех снимках NISAR с 4 поляризациями в орошаемых регионах: Центральная Азия, Инд, Ближний Восток, Австралия, Калифорния.</li><li>Откалибровать индекс риска по полевым пробам ECe.</li><li>Сезонные оповещения, когда на поле появляется сигнатура соли.</li></ul>
+    <p class="src">Источники: ${SRC_FAO}; ${SRC_QADIR}; ${SRC_JIRCAS}</p>`,
+  method:`
+    <h3>Физическая основа</h3>
+    <p>Растворённая соль добавляет почвенной воде ионную проводимость σ и повышает мнимую часть проницаемости <span class="mono">ε″ = σ/(2πfε₀)</span> — отсюда наше название. Комплексная ε поворачивает фазу между сигналами HH и VV; вода в основном повышает ε′, а это меняет силу сигнала, но почти не меняет фазу. Поэтому фаза отделяет соль от влаги там, где амплитуда не может.</p>
+    <h3>Обработка</h3>
+    <ul>
+      <li>NISAR L2 GCOV (20 м), усреднение 10×10 → 200 м. Комплексный HH·VV* усредняется до вычисления угла.</li>
+      <li>Фаза отсчитывается от сухих песков Тара (ε″ ≈ 0) — так убирается калибровочный сдвиг предварительных снимков (+61° в июне–июле, −96° в октябре).</li>
+      <li>Риск = P(влажность) × (1 − P(максимум HV за сезон)), P — перцентиль по снимку; открытая вода исключена.</li>
+      <li>Сигнатура соли = голая почва с фазой ≥ +5° на каждой доступной дате (не меньше 2 дат).</li>
+    </ul>
+    <h3>Ограничения</h3>
+    <ul>
+      <li>Предварительные продукты; пока один регион с 4 поляризациями.</li>
+      <li>Индекс риска — инструмент для поиска; для калибровки нужны полевые пробы ECe.</li>
+      <li>В L-диапазоне чувствительность к соли умеренная; метод лучше всего работает на голой почве.</li>
+    </ul>
+    <p class="src">Данные: NASA-ISRO NISAR L2 GCOV, L3 SME2 (предварительные), NASA Earthdata / ASF DAAC. Код: лицензия MIT. Команда ε″ · NASA Space Apps Challenge 2026.</p>`,
+},
+uz:{
+  sub:"L-diapazon radar polarimetriyasi orqali tuproq shoʻrlanishi", tour:"▶ Sayohat",
+  tab_layers:"Qatlamlar", tab_field:"Nuqta", tab_evidence:"Dalillar", tab_impact:"Foyda", tab_method:"Usul",
+  acq:"Suratga olish sanasi", opacity:"Shaffoflik", cmp:"⇆ Solishtirish", labels:"Yozuvlar", close:"Yopish", back:"Orqaga", next:"Keyingi", finish:"Tayyor", step:"Qadam",
+  theme:["Avto","Yorugʻ","Qorongʻi"],
+  region:{mirzachul:["Mirzachoʻl","global · DH","Mirzachoʻl va Sirdaryo (Oʻzbekiston)"], rann:["Kach Ranni","aniq · QP","Kach Ranni / Tar (Pokiston–Hindiston)"]},
+  mode:{precision:["Aniq rejim · 4 polyarizatsiya","HH, HV, VH, VV va kompleks HH·VV*. Fazaga koʻra tuzni aniqlash."], global:["Global rejim · 2 polyarizatsiya","HH + HV + SME2 namligi. Mavsumiy oʻzgarishlar va shoʻrlanish xavfini baholash."]},
+  groups:{Backscatter:"Radar signali", Change:"Oʻzgarishlar", Soil:"Tuproq", Salinity:"Shoʻrlanish"},
+  layers:{
+    RGB:["Rangli radar surati","R = HH, G = HV, B = HH−HV"], HV:["HV signali σ⁰","Hajmiy sochilish: oʻsimliklar"],
+    dHV:["Birinchi sanadan beri ΔHV","Manfiy = oʻsimlik yoʻqolgan (hosil yigʻimi, ekin nobud boʻlishi)"], dHH:["Birinchi sanadan beri ΔHH","Yuza oʻzgarishi: sugʻorish, haydash, suv bosishi"],
+    SM:["Tuproq namligi (SME2)","NISAR L3 mahsuloti, 200 m"], RISK:["Shoʻrlanish xavfi indeksi","Butun mavsum nam, lekin yalangʻoch; yuqori 30% koʻrsatilgan"],
+    PHASE:["HH–VV faza farqi","Quruq Tar qumlariga nisbatan"], SALT:["Tuz belgisi","Yalangʻoch tuproq, har bir sanada φ ≥ +5°"]},
+  ticks:{RISK:["P70","P85","P100"], SALT:["barcha sanalarda",""]}, leg:{RISK:"Xavf persentili", SALT:"Tuz belgisi"},
+  probe_empty:"<h3>Nuqtani tanlang</h3><p class='hint'>Har bir sana uchun ~600 m maydonning σ⁰, namlik va fazasini koʻrish uchun radar suratini bosing.</p>",
+  probe_nodata:"<h3>Maʼlumot yoʻq</h3><p class='hint'>NISAR suratga olish yoʻlagidan tashqarida. Radar surati ichini bosing.</p>",
+  cell:"Maydon ~600 m", sm:"Namlik, m³/m³", dphi:"Qumga nisbatan Δφ, °",
+  risk_hi:"Butun mavsum nam, lekin oʻsimlik deyarli yoʻq — ehtimol shoʻrlangan yer.", risk_lo:"Namlik va oʻsimlik boʻyicha shoʻrlanish belgisi yoʻq.",
+  hv_loss:"Oʻsimlik keskin kamaygan: hosil yigʻimi yoki ekin nobud boʻlgan.", hv_gain:"Mavsum davomida oʻsimlik oʻsgan.", hv_flat:"Oʻsimlik deyarli oʻzgarmagan.",
+  salt_sig:"TUZ BELGISI", salt_txt:"Har bir sanada Δφ ≥ +5°. Model: tuz qatlami +4…+9°, namlik ≈ 0°.", no_sig:"BARQAROR BELGI YOʻQ",
+  tourSteps:[
+    ["Oʻzbekiston ustida NISAR","2026-yil 13-oktabrdagi L-diapazon radar surati: Toshkent, Sirdaryo vodiysi va <b>Mirzachoʻl (Mirzachoʻl dashti)</b> sugʻoriladigan hududi. Yashil — oʻsimlik, binafsha — yalangʻoch silliq tuproq."],
+    ["Oʻzgarishlar mavsumi","Iyundan oktabrgacha HV oʻzgarishi. <b>Koʻk</b> — oʻsimlik yoʻqolgan: paxta va bugʻdoy yigʻib olingan. Hosildan keyingi yalangʻoch tuproq — tuzni koʻrish uchun eng qulay payt."],
+    ["Tuz qayerda boʻlishi mumkin","Butun mavsum <b>nam</b> (NISAR namligi), lekin <b>yalangʻoch</b> qolgan yer. Mirzachoʻlda yerning <b>35%</b> yuqori xavf zonasida, suratda oʻrtacha 13%. Sirdaryo viloyatida sugʻoriladigan yerlarning 99% shoʻrlangan."],
+    ["Aniq rejim: Kach Ranni","Dunyodagi eng yirik shoʻrxoklardan biri (markazda, qorongʻi) va Tar choʻlining shoʻrlanmagan qumlari (shimolda) ustidan 4 polyarizatsiyali surat."],
+    ["Tuzning izi","Qumlarga nisbatan HH–VV fazasi. Model tuz qatlami uchun <b>+4…+9°</b>, nam tuproq uchun ≈0° ni bashorat qiladi. Shoʻrxokda uchala sanada <b>+5…+14°</b>."],
+    ["Barqaror tuz belgisi","Har bir sanada fazasi ≥ +5° boʻlgan yalangʻoch yer: bu bir martalik yomgʻir emas, tuproqning doimiy xossasi — tuz."],
+    ["Qanchalik ishonchmiz?","Faqat fazaning oʻzi shoʻrxokni qumdan <b>77–90%</b> aniqlik bilan ajratadi. Namlik ham, gʻadir-budurlik ham siljishni tushuntirmaydi. Batafsil — panelda."]],
+  evidence:`
+    <h3>Aniq rejim · bu haqiqatan tuzmi?</h3>
+    <div class="kpi"><div><b>+4…+9°</b><span>model: tuz qatlami va quruq qum</span></div><div><b>−0,2°</b><span>model: namlik 0,05→0,35</span></div></div>
+    <p><b>Fizik model.</b> 1,257 GGs chastotadagi tuproqning dielektrik modeli (Stogrin boʻyicha shoʻr suv + Dobson boʻyicha aralashma) va Bregg sochilishi (SPM). 20 000 tasodifiy tuproqda tuz HH–VV fazasi farqining <b>74%</b>ini, namlik <b>13%</b>ini, tushish burchagi <b>6%</b>ini tushuntiradi.</p>
+    <img src="phase_model.png" alt="Namlik va shoʻrlikka bogʻliq model HH–VV fazasi">
+    <p style="margin-top:14px"><b>NISAR suratlarida tabiiy tajriba.</b> Katta Kach Ranni shoʻrxogi va shoʻrlanmagan Tar qumlari; hududlar geografiya boʻyicha belgilangan; faqat yalangʻoch tuproq.</p>
+    <div class="kpi"><div><b>+5…+14°</b><span>shoʻrxok va qum, barcha 3 sana</span></div><div><b>0,77–0,90</b><span>faqat faza boʻyicha aniqlik</span></div></div>
+    <img src="evidence.png" alt="Uch sanada shoʻrxok fazasining siljishi va ajratish aniqligi">
+    <ul>
+      <li>Ishora va kattalik model bilan mos.</li>
+      <li><b>Namlik emas:</b> NISAR SME2 maʼlumotiga koʻra shoʻrxok qumdan ham <i>quruqroq</i>.</li>
+      <li><b>Gʻadir-budurlik emas:</b> bir xil gʻadir-budurlikdagi shoʻrxok va qum maydonlarini solishtirganda siljish <b>+8°, +12°, +4°</b> boʻlib qoladi.</li>
+      <li><b>Nazorat</b> (Xadir/Bela orollari): ishora sanadan sanaga oʻzgaradi.</li>
+    </ul>
+    <h3>Global rejim · xavf maʼlum shoʻr yerlarga toʻgʻri keladimi?</h3>
+    <div class="kpi"><div><b>35%</b><span>Mirzachoʻl yerlari yuqori xavf zonasida</span></div><div><b>13%</b><span>butun surat boʻyicha</span></div></div>
+    <p>Indeks Mirzachoʻl sugʻoriladigan hududini surat oʻrtachasidan <b>2,6 marta</b> koʻproq belgilaydi. Sirdaryo viloyatida sugʻoriladigan yerlarning 99,1% kuchsiz yoki oʻrtacha shoʻrlangan.</p>
+    <p class="src">Manba: ${SRC_JIRCAS}</p>`,
+  impact:`
+    <h3>Nima uchun muhim</h3>
+    <div class="kpi big"><div><b>1,4 mlrd ga</b><span>dunyodagi shoʻrlangan yerlar, butun quruqlikning 10,7%</span></div><div><b>+1 mlrd ga</b><span>iqlim va notoʻgʻri sugʻorish tufayli xavf ostida</span></div></div>
+    <div class="kpi big"><div><b>$27 mlrd</b><span>shoʻrlangan sugʻoriladigan yerlarda yillik hosil yoʻqotilishi</span></div><div><b>−70%</b><span>eng koʻp zarar koʻrgan hududlarda guruch yoki dukkakli hosil</span></div></div>
+    <div class="kpi big"><div><b>&gt;50%</b><span>Oʻzbekiston sugʻoriladigan yerlari shoʻrlangan</span></div><div><b>99%</b><span>Sirdaryo viloyati (Mirzachoʻl) sugʻoriladigan yerlari</span></div></div>
+    <p>Tuz odatda oq qatlam paydo boʻlgandagina — hosil yoʻqotilgandan keyin koʻrinadi. Radar fazasi uni ertaroq koʻrsatishi mumkin, NISAR uchadigan hamma joyda: butun Yer quruqligi har 12 kunda, bepul va ochiq.</p>
+    <h3>Kimga kerak</h3>
+    <div class="who"><i>1</i><p><b>Fermerlar va suv isteʼmolchilari uyushmalari</b> — ekishdan oldin qaysi dalaga yuvish yoki tuzga chidamli ekin kerakligini bilish.</p></div>
+    <div class="who"><i>2</i><p><b>Qishloq va suv xoʻjaligi vazirliklari</b> — drenajni tuz allaqachon koʻringan joyda emas, tarqalayotgan joyda taʼmirlash.</p></div>
+    <div class="who"><i>3</i><p><b>FAO va rivojlanish banklari</b> — barcha mamlakatlarda shoʻrlanishni bitta bepul usul bilan kuzatish.</p></div>
+    <h3>Keyingi qadamlar</h3>
+    <ul><li>Sugʻoriladigan hududlardagi barcha 4 polyarizatsiyali NISAR suratlarida ishga tushirish: Markaziy Osiyo, Hind, Yaqin Sharq, Avstraliya, Kaliforniya.</li><li>Xavf indeksini dala ECe namunalari boʻyicha kalibrlash.</li><li>Dalada tuz belgisi paydo boʻlganda mavsumiy ogohlantirishlar.</li></ul>
+    <p class="src">Manbalar: ${SRC_FAO}; ${SRC_QADIR}; ${SRC_JIRCAS}</p>`,
+  method:`
+    <h3>Fizik asos</h3>
+    <p>Erigan tuz tuproq suviga ion oʻtkazuvchanligi σ qoʻshadi va dielektrik singdiruvchanlikning mavhum qismini oshiradi: <span class="mono">ε″ = σ/(2πfε₀)</span> — nomimiz shundan. Kompleks ε HH va VV signallari orasidagi fazani buradi; suv asosan ε′ ni oshiradi, bu signal kuchini oʻzgartiradi, lekin fazani deyarli oʻzgartirmaydi. Shuning uchun faza tuzni namlikdan ajratadi.</p>
+    <h3>Ishlov berish</h3>
+    <ul>
+      <li>NISAR L2 GCOV (20 m), 10×10 oʻrtachalash → 200 m. Kompleks HH·VV* burchak hisoblanishidan oldin oʻrtachalanadi.</li>
+      <li>Faza quruq Tar qumlaridan (ε″ ≈ 0) hisoblanadi — dastlabki suratlarning kalibrlash siljishi (+61° iyun–iyul, −96° oktabr) olib tashlanadi.</li>
+      <li>Xavf = P(namlik) × (1 − P(mavsumdagi maksimal HV)), P — surat ichidagi persentil; ochiq suv chiqarib tashlangan.</li>
+      <li>Tuz belgisi = har bir sanada (kamida 2 sana) fazasi ≥ +5° boʻlgan yalangʻoch tuproq.</li>
+    </ul>
+    <h3>Cheklovlar</h3>
+    <ul>
+      <li>Dastlabki mahsulotlar; hozircha 4 polyarizatsiyali bitta hudud.</li>
+      <li>Xavf indeksi — qidiruv vositasi; kalibrlash uchun dala ECe namunalari kerak.</li>
+      <li>L-diapazonda tuzga sezgirlik oʻrtacha; usul yalangʻoch tuproqda eng yaxshi ishlaydi.</li>
+    </ul>
+    <p class="src">Maʼlumotlar: NASA-ISRO NISAR L2 GCOV, L3 SME2 (dastlabki), NASA Earthdata / ASF DAAC. Kod: MIT litsenziyasi. ε″ jamoasi · NASA Space Apps Challenge 2026.</p>`,
+}};
+const MONTHS = {en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], ru:["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"], uz:["yan","fev","mar","apr","may","iyn","iyl","avg","sen","okt","noy","dek"]};
+
+/* place labels: [lat, lon, {en,ru,uz}, kind] */
+const PLACES = [
+  [41.311, 69.279, {en:"Tashkent", ru:"Ташкент", uz:"Toshkent"}, "city"],
+  [40.490, 68.780, {en:"Gulistan", ru:"Гулистан", uz:"Guliston"}, "city"],
+  [40.275, 68.822, {en:"Yangiyer", ru:"Янгиер", uz:"Yangiyer"}, "city"],
+  [40.220, 69.270, {en:"Bekabad", ru:"Бекабад", uz:"Bekobod"}, "city"],
+  [40.283, 69.622, {en:"Khujand", ru:"Худжанд", uz:"Xoʻjand"}, "city"],
+  [41.469, 69.583, {en:"Chirchiq", ru:"Чирчик", uz:"Chirchiq"}, "city"],
+  [40.840, 68.660, {en:"Sirdaryo", ru:"Сырдарья", uz:"Sirdaryo"}, "city"],
+  [40.380, 68.450, {en:"Mirzachul · Hungry Steppe", ru:"Мирзачуль · Голодная степь", uz:"Mirzachoʻl dashti"}, "area"],
+  [40.650, 68.880, {en:"Syr Darya", ru:"р. Сырдарья", uz:"Sirdaryo daryosi"}, "water"],
+  [24.020, 70.150, {en:"Great Rann of Kutch", ru:"Большой Ранн Кач", uz:"Katta Kach Ranni"}, "area"],
+  [24.620, 69.950, {en:"Thar Desert", ru:"Пустыня Тар", uz:"Tar choʻli"}, "area"],
+  [23.840, 70.700, {en:"Khadir Bet", ru:"о. Кхадир", uz:"Xadir oroli"}, "area"],
 ];
 
-let META, region, layer = "RGB", dateIdx = 2, overlay = null, before = null, cubes = {}, marker = null, cmpOn = false, swipeX = .5, tourI = -1;
+/* ======================= APP ======================= */
+const CUBE_STEP = 0.006;
+const RDBU = "linear-gradient(90deg,#053061,#2166ac,#92c5de,#f7f7f7,#f4a582,#b2182b,#67001f)";
+const LAYER_DEF = {
+  RGB:{g:"Backscatter", dated:true, cmp:true},
+  HV:{g:"Backscatter", dated:true, cmp:true, legend:{t:"σ⁰ HV", grad:"linear-gradient(90deg,#000,#fff)", ticks:["−32 dB","−21","−10 dB"]}},
+  dHV:{g:"Change", dated:true, skipFirst:true, legend:{t:"ΔHV", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
+  dHH:{g:"Change", dated:true, skipFirst:true, legend:{t:"ΔHH", grad:RDBU, ticks:["−6 dB","0","+6 dB"]}},
+  SM:{g:"Soil", dated:true, cmp:true, legend:{t:"mᵥ", grad:"linear-gradient(90deg,#440154,#3b528b,#21918c,#5ec962,#fde725)", ticks:["0.02","0.21","0.40 m³/m³"]}},
+  RISK:{g:"Salinity", dated:false, legend:{t:"RISK", grad:"linear-gradient(90deg,#fcfdbf,#fc8961,#b73779,#51127c,#000004)"}},
+  PHASE:{g:"Salinity", dated:true, cmp:true, legend:{t:"φ(HH·VV*) − φ_sand", grad:RDBU, ticks:["−25°","0°","+25°"]}},
+  SALT:{g:"Salinity", dated:false, legend:{t:"SALT", grad:"linear-gradient(90deg,#E4572E,#E4572E)"}},
+};
+const TOUR = [
+  {r:"mirzachul", l:"RGB", d:2}, {r:"mirzachul", l:"dHV", d:2, c:[40.45,68.6], z:10}, {r:"mirzachul", l:"RISK", c:[40.55,68.55], z:10},
+  {r:"rann", l:"RGB", d:1}, {r:"rann", l:"PHASE", d:1, c:[24.08,70.1], z:9}, {r:"rann", l:"SALT", c:[24.17,69.6], z:10}, {tab:"evidence"},
+];
+
+let META, region, layer = "RGB", dateIdx = 2, overlay = null, before = null, cubes = {}, marker = null, cmpOn = false, swipeX = .5, tourI = -1, lastLL = null;
+let LANG = "en", labelsOn = true, labelLayer = null;
+try{ const l = localStorage.getItem("lang"); if(l && TX[l]) LANG = l; }catch(e){}
+const T = k => TX[LANG][k];
 const $ = s => document.querySelector(s);
 const map = L.map("map", {zoomControl:false, preferCanvas:true});
 L.control.zoom({position:"topright"}).addTo(map);
@@ -932,9 +1154,9 @@ L.control.scale({position:"topright", imperial:false}).addTo(map);
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
   {maxZoom:17, attribution:"Basemap © Esri · SAR: NASA-ISRO NISAR"}).addTo(map);
 map.createPane("before"); map.getPane("before").style.zIndex = 410;
+map.createPane("labels"); map.getPane("labels").style.zIndex = 640; map.getPane("labels").style.pointerEvents = "none";
 
-const fmt = d => new Date(d.slice(0,4)+"-"+d.slice(4,6)+"-"+d.slice(6));
-const fmtDate = d => fmt(d).toLocaleDateString("en-GB",{day:"2-digit",month:"short"});
+const fmtDate = d => `${+d.slice(6)} ${MONTHS[LANG][+d.slice(4,6)-1]}`;
 
 function setTheme(t){
   if(t === "auto") document.documentElement.removeAttribute("data-theme");
@@ -942,8 +1164,7 @@ function setTheme(t){
   try{ localStorage.setItem("theme", t) }catch(e){}
   document.querySelectorAll("#themeSeg button").forEach(b => b.classList.toggle("on", b.dataset.t === t));
 }
-document.querySelectorAll("#themeSeg button").forEach(b => b.onclick = () => setTheme(b.dataset.t));
-try{ const t = localStorage.getItem("theme"); if(t) setTheme(t) }catch(e){}
+function curTheme(){ return document.documentElement.getAttribute("data-theme") || "auto"; }
 
 function showTab(p){
   document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.p === p));
@@ -951,17 +1172,43 @@ function showTab(p){
 }
 document.querySelectorAll("#tabs button").forEach(b => b.onclick = () => showTab(b.dataset.p));
 
-const emptyProbe = () => `<h3>Inspect a location</h3><p class="hint">Click the radar image to read σ⁰, soil moisture and phase for a ~600 m cell on every acquisition date.</p>`;
+function drawLabels(){
+  if(labelLayer) labelLayer.remove();
+  labelLayer = L.layerGroup(PLACES.map(([la, lo, n, kind]) => L.marker([la, lo], {pane:"labels", interactive:false, keyboard:false,
+    icon:L.divIcon({className:`plabel ${kind}`, html:`<span>${n[LANG]}</span>`, iconSize:[0,0]})})));
+  if(labelsOn) labelLayer.addTo(map);
+}
+
+function applyLang(){
+  document.documentElement.lang = LANG;
+  try{ localStorage.setItem("lang", LANG) }catch(e){}
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = T(el.dataset.t));
+  document.querySelectorAll("#lang button").forEach(b => b.classList.toggle("on", b.dataset.l === LANG));
+  $("#p-evidence").innerHTML = T("evidence");
+  $("#p-impact").innerHTML = T("impact");
+  const th = T("theme");
+  $("#p-about").innerHTML = T("method") + `<div class="theme" id="themeSeg"><button data-t2="auto">${th[0]}</button><button data-t2="light">${th[1]}</button><button data-t2="dark">${th[2]}</button></div>`;
+  document.querySelectorAll("#themeSeg button").forEach(b => { b.dataset.t = b.dataset.t2; b.onclick = () => setTheme(b.dataset.t2); });
+  setTheme(curTheme());
+  $("#cmp").textContent = T("cmp"); $("#lblBtn").textContent = T("labels");
+  $("#tourX").textContent = T("close"); $("#tourB").textContent = T("back");
+  $("#regions").innerHTML = "";
+  for(const k of ["mirzachul","rann"]){
+    const b = document.createElement("button"), r = T("region")[k];
+    b.innerHTML = `${r[0]}<small>${r[1]}</small>`; b.dataset.k = k; b.onclick = () => selectRegion(k);
+    b.classList.toggle("on", k === region); $("#regions").appendChild(b);
+  }
+  drawLabels();
+  if(META){ renderLayers(); draw(); if(lastLL && marker) probe(lastLL, true); else $("#probe").innerHTML = T("probe_empty"); if(tourI >= 0) tourGo(tourI, true); }
+}
+document.querySelectorAll("#lang button").forEach(b => b.onclick = () => { LANG = b.dataset.l; applyLang(); });
 
 async function init(){
+  applyLang();
   META = await (await fetch("data/meta.json")).json();
-  for(const k of ["mirzachul","rann"]){
-    const b = document.createElement("button");
-    b.innerHTML = `${REGION_LABEL[k][0]}<small>${REGION_LABEL[k][1]}</small>`;
-    b.dataset.k = k; b.onclick = () => selectRegion(k); $("#regions").appendChild(b);
-  }
   $("#opacity").oninput = e => { const o = e.target.value/100; overlay && overlay.setOpacity(o); before && before.setOpacity(o); };
   $("#cmp").onclick = () => { cmpOn = !cmpOn; draw(); };
+  $("#lblBtn").onclick = () => { labelsOn = !labelsOn; $("#lblBtn").classList.toggle("on", labelsOn); drawLabels(); };
   map.on("click", e => probe(e.latlng));
   map.on("mousemove", e => $("#coords").textContent = `${e.latlng.lat.toFixed(4)}° N  ${e.latlng.lng.toFixed(4)}° E`);
   map.on("move zoom resize", clip);
@@ -975,43 +1222,46 @@ async function init(){
 
 function fit(R){
   const wide = innerWidth > 860;
-  map.fitBounds(R.bounds, {paddingTopLeft: wide ? [380, 70] : [0, 60], paddingBottomRight: wide ? [20, 100] : [0, innerHeight*.48]});
+  map.fitBounds(R.bounds, {paddingTopLeft: wide ? [396, 70] : [0, 60], paddingBottomRight: wide ? [20, 100] : [0, innerHeight*.48]});
 }
 
-function selectRegion(k, noFit){
-  region = k; const R = META.regions[k], m = MODE_TEXT[R.mode];
-  document.querySelectorAll("#regions button").forEach(b => b.classList.toggle("on", b.dataset.k === k));
-  $("#modeBox").innerHTML = `<div class="mode"><div class="lbl">${m.t}</div><b>${R.title}</b><p>${m.p}</p></div>`;
-  if(!R.layers.includes(layer)) layer = "RGB";
+function renderLayers(){
+  const R = META.regions[region], m = T("mode")[R.mode];
+  $("#modeBox").innerHTML = `<div class="mode"><div class="lbl">${m[0]}</div><b>${T("region")[region][2]}</b><p>${m[1]}</p></div>`;
   let html = "", g = null;
   for(const L_ of R.layers){
-    const I = LAYER_INFO[L_];
-    if(I.g !== g){ g = I.g; html += `<div class="lbl group">${g}</div>`; }
-    html += `<div class="layer ${L_===layer?"on":""}" data-l="${L_}"><span class="rb"></span><span><b>${I.name}</b><small>${I.desc}</small></span></div>`;
+    const D = LAYER_DEF[L_], n = T("layers")[L_];
+    if(D.g !== g){ g = D.g; html += `<div class="lbl group">${T("groups")[g]}</div>`; }
+    html += `<div class="layer ${L_===layer?"on":""}" data-l="${L_}"><span class="rb"></span><span><b>${n[0]}</b><small>${n[1]}</small></span></div>`;
   }
   $("#layers").innerHTML = html;
   document.querySelectorAll(".layer").forEach(el => el.onclick = () => setLayer(el.dataset.l));
+  document.querySelectorAll("#regions button").forEach(b => b.classList.toggle("on", b.dataset.k === region));
+}
+
+function selectRegion(k, noFit){
+  region = k; const R = META.regions[k];
+  if(!R.layers.includes(layer)) layer = "RGB";
   dateIdx = R.dates.length - 1;
+  renderLayers();
   if(!noFit) fit(R);
-  if(marker){ marker.remove(); marker = null; }
-  $("#probe").innerHTML = emptyProbe();
+  if(marker){ marker.remove(); marker = null; } lastLL = null;
+  $("#probe").innerHTML = T("probe_empty");
   loadCube(k); draw();
 }
 
-function setLayer(l){
-  layer = l; document.querySelectorAll(".layer").forEach(x => x.classList.toggle("on", x.dataset.l === l)); draw();
-}
+function setLayer(l){ layer = l; document.querySelectorAll(".layer").forEach(x => x.classList.toggle("on", x.dataset.l === l)); draw(); }
 
 function draw(){
-  const R = META.regions[region], I = LAYER_INFO[layer];
-  if(I.skipFirst && dateIdx === 0) dateIdx = 1;
-  const canCmp = !!I.cmp; if(!canCmp) cmpOn = false;
+  const R = META.regions[region], D = LAYER_DEF[layer], n = T("layers")[layer];
+  if(D.skipFirst && dateIdx === 0) dateIdx = 1;
+  if(!D.cmp) cmpOn = false;
   if(cmpOn && dateIdx === 0) dateIdx = R.dates.length - 1;
-  $("#cmp").disabled = !canCmp; $("#cmp").classList.toggle("on", cmpOn);
-  $("#dates").innerHTML = R.dates.map((d,i) => `<button data-i="${i}" class="${I.dated && i===dateIdx?"on":""}" ${!I.dated || (I.skipFirst && i===0) || (cmpOn && i===0) ? "disabled" : ""}>${fmtDate(d)}</button>`).join("");
+  $("#cmp").disabled = !D.cmp; $("#cmp").classList.toggle("on", cmpOn);
+  $("#dates").innerHTML = R.dates.map((d,i) => `<button data-i="${i}" class="${D.dated && i===dateIdx?"on":""}" ${!D.dated || (D.skipFirst && i===0) || (cmpOn && i===0) ? "disabled" : ""}>${fmtDate(d)}</button>`).join("");
   document.querySelectorAll("#dates button").forEach(b => b.onclick = () => { dateIdx = +b.dataset.i; draw(); });
   const op = $("#opacity").value/100;
-  const file = I.dated ? `${layer}_${R.dates[dateIdx]}.webp` : `${layer}.webp`;
+  const file = D.dated ? `${layer}_${R.dates[dateIdx]}.webp` : `${layer}.webp`;
   if(overlay) overlay.remove();
   overlay = L.imageOverlay(`data/${region}/${file}`, R.bounds, {opacity:op, interactive:false}).addTo(map);
   if(before){ before.remove(); before = null; }
@@ -1022,9 +1272,11 @@ function draw(){
   }
   $("#divider").style.display = cmpOn ? "block" : "none";
   clip();
-  $("#legend").innerHTML = I.legend
-    ? `<div class="lbl">${I.legend.t}</div><div class="bar" style="background:${I.legend.grad}"></div><div class="ticks">${I.legend.ticks.map(t=>`<span>${t}</span>`).join("")}</div>`
-    : `<div class="lbl">${I.name}</div><div class="ticks"><span>${I.desc}</span></div>`;
+  const lg = D.legend;
+  if(lg){
+    const title = T("leg")[layer] || lg.t, ticks = T("ticks")[layer] || lg.ticks;
+    $("#legend").innerHTML = `<div class="lbl">${title}</div><div class="bar" style="background:${lg.grad}"></div><div class="ticks">${ticks.map(t=>`<span>${t}</span>`).join("")}</div>`;
+  } else $("#legend").innerHTML = `<div class="lbl">${n[0]}</div><div class="ticks"><span>${n[1]}</span></div>`;
 }
 
 function setupDivider(){
@@ -1045,9 +1297,8 @@ function setupDivider(){
 }
 
 function clip(){
-  const pane = map.getPane("before"); const size = map.getSize();
-  const x = size.x * swipeX;
-  $("#divider") && ($("#divider").style.left = x + "px");
+  const pane = map.getPane("before"), size = map.getSize(), x = size.x * swipeX;
+  const dv = $("#divider"); if(dv) dv.style.left = x + "px";
   if(!cmpOn){ pane.style.clip = ""; return; }
   const nw = map.containerPointToLayerPoint([0,0]), se = map.containerPointToLayerPoint(size);
   pane.style.clip = `rect(${nw.y}px, ${nw.x + x}px, ${se.y}px, ${nw.x}px)`;
@@ -1068,38 +1319,37 @@ function val(k, band, r, c){
   return lo + q*(hi-lo)/250;
 }
 
-function probe(ll){
+function probe(ll, silent){
   const R = META.regions[region];
-  if(!cubes[region] || tourI >= 0) return;
+  if(!cubes[region] || (tourI >= 0 && !silent)) return;
   const [[, lon0], [lat1]] = R.bounds, [H, W] = R.cube_shape;
   const r = Math.floor((lat1 - ll.lat)/CUBE_STEP), c = Math.floor((ll.lng - lon0)/CUBE_STEP);
   if(r < 0 || c < 0 || r >= H || c >= W) return;
   const rows = {};
   R.cube_order.forEach(([d, key], band) => { (rows[key] ||= {})[d] = val(region, band, r, c); });
-  showTab("field");
-  if(!R.dates.some(d => rows.HH[d] !== null)){
-    $("#probe").innerHTML = `<h3>No data</h3><p class="hint">Outside the NISAR swath or masked. Click inside the radar image.</p>`; return;
-  }
+  if(!silent) showTab("field");
+  if(!R.dates.some(d => rows.HH[d] !== null)){ $("#probe").innerHTML = T("probe_nodata"); return; }
+  lastLL = ll;
   if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:6, color:"#fff", weight:2, fillColor:"#1D5FB0", fillOpacity:1}).addTo(map);
   const keys = ["HH","HV","VV","SM","PHASE"].filter(k => rows[k]);
-  const name = {HH:"σ⁰ HH, dB", HV:"σ⁰ HV, dB", VV:"σ⁰ VV, dB", SM:"mᵥ, m³/m³", PHASE:"Δφ vs sand, °"};
+  const name = {HH:"σ⁰ HH, dB", HV:"σ⁰ HV, dB", VV:"σ⁰ VV, dB", SM:T("sm"), PHASE:T("dphi")};
   const f = (k, v) => v === null ? "—" : (k === "SM" ? v.toFixed(2) : (k === "PHASE" && v > 0 ? "+" : "") + v.toFixed(1));
-  let html = `<div class="lbl">Cell ~600 m · ${R.title}</div><h3 class="mono" style="margin-top:2px">${ll.lat.toFixed(4)}° N, ${ll.lng.toFixed(4)}° E</h3>
+  let html = `<div class="lbl">${T("cell")} · ${T("region")[region][2]}</div><h3 class="mono" style="margin-top:2px">${ll.lat.toFixed(4)}° N, ${ll.lng.toFixed(4)}° E</h3>
   <table><tr><th></th>${R.dates.map(d => `<th>${fmtDate(d)}</th>`).join("")}</tr>
   ${keys.map(k => `<tr><td>${name[k]}</td>${R.dates.map(d => `<td>${f(k, rows[k][d])}</td>`).join("")}</tr>`).join("")}</table>`;
   html += chart(R.dates, rows);
   const v = [];
   if(R.mode === "global" && rows.RISK.all !== null){
     const p = Math.round(rows.RISK.all*100), col = p >= 90 ? "var(--alert)" : p >= 70 ? "#B7791F" : "var(--ok)";
-    v.push(`<p><span class="tag" style="background:${col};color:#fff">RISK P${p}</span>${p >= 70 ? "Wet yet sparsely vegetated through the season — candidate salt-affected land." : "No salinization symptom from moisture/vegetation."}</p>`);
+    v.push(`<p><span class="tag" style="background:${col};color:#fff">RISK P${p}</span>${p >= 70 ? T("risk_hi") : T("risk_lo")}</p>`);
   }
   const hvs = R.dates.map(d => rows.HV[d]).filter(x => x !== null);
-  if(hvs.length > 1){ const dv = hvs[hvs.length-1] - hvs[0]; v.push(`<p><span class="tag" style="background:var(--accent-soft);color:var(--accent)">ΔHV ${dv>0?"+":""}${dv.toFixed(1)} dB</span>${dv < -2 ? "Strong vegetation loss: harvest or crop failure." : dv > 2 ? "Vegetation growth during the season." : "Vegetation roughly stable."}</p>`); }
+  if(hvs.length > 1){ const dv = hvs[hvs.length-1] - hvs[0]; v.push(`<p><span class="tag" style="background:var(--accent-soft);color:var(--accent)">ΔHV ${dv>0?"+":""}${dv.toFixed(1)} dB</span>${dv < -2 ? T("hv_loss") : dv > 2 ? T("hv_gain") : T("hv_flat")}</p>`); }
   if(rows.PHASE){
     const ph = R.dates.map(d => rows.PHASE[d]).filter(x => x !== null);
     const sig = rows.SALT ? rows.SALT.all : null;
-    if(sig !== null && sig >= 0.99) v.push(`<p><span class="tag" style="background:#E4572E;color:#fff">SALT SIGNATURE</span>Δφ ≥ +5° on every date. Model: salt crust +4…+9°, moisture ≈ 0°.</p>`);
-    else if(ph.length) v.push(`<p><span class="tag" style="background:var(--panel-2);color:var(--muted);border:1px solid var(--line)">NO STABLE SIGNATURE</span>Δφ = ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}.</p>`);
+    if(sig !== null && sig >= 0.99) v.push(`<p><span class="tag" style="background:#E4572E;color:#fff">${T("salt_sig")}</span>${T("salt_txt")}</p>`);
+    else if(ph.length) v.push(`<p><span class="tag" style="background:var(--panel-2);color:var(--muted);border:1px solid var(--line)">${T("no_sig")}</span>Δφ = ${ph.map(x=>(x>0?"+":"")+x.toFixed(0)+"°").join(", ")}.</p>`);
   }
   html += `<div class="verdict">${v.join("")}</div>`;
   $("#probe").innerHTML = html;
@@ -1121,21 +1371,24 @@ function chart(dates, rows){
   }).join("");
 }
 
-function tourGo(i){
+function tourGo(i, textOnly){
   tourI = i;
   if(i < 0){ $("#tour").style.display = "none"; return; }
   const s = TOUR[i];
-  if(s.r){
-    if(s.r !== region) selectRegion(s.r, true);
-    showTab("layers");
-    if(s.l) setLayer(s.l);
-    if(s.d !== undefined){ dateIdx = s.d; draw(); }
-    if(s.c) map.flyTo(s.c, s.z, {duration:1.2}); else fit(META.regions[region]);
+  if(!textOnly){
+    if(s.r){
+      if(s.r !== region) selectRegion(s.r, true);
+      showTab("layers");
+      if(s.l) setLayer(s.l);
+      if(s.d !== undefined){ dateIdx = s.d; draw(); }
+      if(s.c) map.flyTo(s.c, s.z, {duration:1.2}); else fit(META.regions[region]);
+    }
+    if(s.tab) showTab(s.tab);
   }
-  if(s.tab) showTab(s.tab);
-  $("#tourN").textContent = `Step ${i+1} / ${TOUR.length}`;
-  $("#tourT").textContent = s.t; $("#tourP").innerHTML = s.p;
-  $("#tourB").disabled = i === 0; $("#tourF").textContent = i === TOUR.length-1 ? "Finish" : "Next";
+  const st = T("tourSteps")[i];
+  $("#tourN").textContent = `${T("step")} ${i+1} / ${TOUR.length}`;
+  $("#tourT").textContent = st[0]; $("#tourP").innerHTML = st[1];
+  $("#tourB").disabled = i === 0; $("#tourF").textContent = i === TOUR.length-1 ? T("finish") : T("next");
   $("#tour").style.display = "block";
 }
 

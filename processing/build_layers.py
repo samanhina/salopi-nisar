@@ -1,5 +1,5 @@
 """
-Build web-map layers for the SALOPI x NISAR app.
+Build web-map layers for the ε″ app.
 
 Input : overviews/<region>_<date>.npz  (200 m multilooked GCOV, UTM)  +  data/<folder>/*SME2*.h5
 Output: web/data/<region>/<layer>_<date>.png   transparent PNG overlays on a lat/lon grid

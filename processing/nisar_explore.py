@@ -1,5 +1,5 @@
 """
-SALOPI x NISAR - practice script (preparation, not the hackathon project itself).
+ε″ - NISAR GCOV explorer.
 
 What it does with one NISAR L2 GCOV file (.h5):
   1. Lists everything inside the file (all datasets, their shapes and types).
@@ -129,7 +129,7 @@ def main():
             phase = np.degrees(np.angle(c))
             v = phase[np.isfinite(phase)]
             print(f"HH-VV phase difference: median {np.median(v):6.2f} deg   5-95% {np.percentile(v,5):6.2f} .. {np.percentile(v,95):6.2f} deg")
-            print("  (our SALOPI model: salt shifts this by about -2.5 to -8 deg, moisture only ~ +0.2 deg)")
+            print("  (our physics model: salt shifts this by about -2.5 to -8 deg, moisture only ~ +0.2 deg)")
             plt.figure(figsize=(7, 6))
             plt.imshow(phase, cmap="twilight", vmin=-30, vmax=30)
             plt.colorbar(label="HH-VV phase difference, degrees"); plt.title("HH-VV phase difference"); plt.axis("off")

@@ -1,0 +1,29 @@
+{
+ "20260618": {
+  "rough_median_salt": -8.92,
+  "rough_median_sand": -5.23,
+  "raw_offset": 5.94,
+  "matched_offset": 8.37,
+  "n_bins": 6,
+  "sand_phase_per_dB_roughness": -1.08,
+  "roughness_explains_deg": 4.0
+ },
+ "20260712": {
+  "rough_median_salt": -8.44,
+  "rough_median_sand": -5.27,
+  "raw_offset": 12.91,
+  "matched_offset": 11.89,
+  "n_bins": 5,
+  "sand_phase_per_dB_roughness": -0.74,
+  "roughness_explains_deg": 2.35
+ },
+ "20261016": {
+  "rough_median_salt": -9.94,
+  "rough_median_sand": -5.85,
+  "raw_offset": 3.4,
+  "matched_offset": 3.77,
+  "n_bins": 5,
+  "sand_phase_per_dB_roughness": -1.75,
+  "roughness_explains_deg": 7.14
+ }
+}

@@ -1,7 +1,7 @@
 """
-SALOPI physics -> NISAR: what HH-VV phase should salt and moisture produce at L-band (1.257 GHz)?
+Soil physics -> NISAR: what HH-VV phase should salt and moisture produce at L-band (1.257 GHz)?
 
-Same soil physics as the SALOPI CubeSat model (Stogryn saline water + Dobson mixing),
+Soil dielectric physics (Stogryn saline water + Dobson mixing),
 but a BACKSCATTER surface model instead of specular reflection:
 Small Perturbation Model (first-order Bragg), the standard model for co-pol phase of bare soil.
     a_hh = (e-1) / (cos t + sqrt(e - sin^2 t))^2
@@ -15,8 +15,9 @@ import numpy as np
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-src = open("/home/claude/salopi/salopi_model.py", encoding="utf-8").read().split("# ---------------- ")[0]
-src_all = open("/home/claude/salopi/salopi_model.py", encoding="utf-8").read()
+# requires soil_model.py (Stogryn + Dobson functions) next to this script
+src = open("soil_model.py", encoding="utf-8").read().split("# ---------------- ")[0]
+src_all = open("soil_model.py", encoding="utf-8").read()
 start = src_all.index("E0 = 8.854e-12"); end = src_all.index("SALT_LEVELS")
 ns = {"np": np}; exec(src_all[start:end], ns)
 soil_eps, saline_water_eps, ece_estimate = ns["soil_eps"], ns["saline_water_eps"], ns["ece_estimate"]
@@ -79,7 +80,7 @@ plt.yscale("log"); plt.xlabel("Soil moisture, m³/m³"); plt.ylabel("Salt, g/kg 
 plt.title("Model: phase follows SALT (vertical), barely MOISTURE (horizontal)")
 plt.tight_layout(); plt.savefig(f"{OUT}/phase_map.png", dpi=130); plt.close()
 
-# variance split like the SALOPI ANOVA: random soils, how much of the phase variance is salt vs moisture
+# variance split ANOVA-style: random soils, how much of the phase variance is salt vs moisture
 rng = np.random.default_rng(1)
 n = 20000
 mv_r = rng.uniform(0.03, 0.40, n); s_r = 10 ** rng.uniform(-1, np.log10(30), n); th_r = rng.uniform(33, 47, n)

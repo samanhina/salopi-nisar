@@ -1,5 +1,5 @@
 """
-Real-data test of the SALOPI phase hypothesis on NISAR quad-pol scenes of the Rann of Kutch.
+Real-data test of the phase hypothesis on NISAR quad-pol scenes of the Rann of Kutch.
 
 Natural experiment, zones defined by GEOGRAPHY (not by the radar):
   SAND  - Thar desert dunes north of the Rann (non-saline, dry)        -> phase reference (ε'' ≈ 0)
