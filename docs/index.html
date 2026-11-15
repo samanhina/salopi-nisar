@@ -672,19 +672,19 @@ svg.leaflet-image-layer.leaflet-interactive path {
 <style>
 :root{
   --bg:#EEF1F4; --panel:#FFFFFF; --panel-2:#F6F8FA; --ink:#0F1A2A; --muted:#556274; --faint:#8A96A6;
-  --line:#D5DBE2; --accent:#1D5FB0; --accent-soft:#E3ECF8; --alert:#D2461F; --ok:#2E7D5B;
+  --line:#D5DBE2; --accent:#14457F; --accent-soft:#DCE4EF; --alert:#D2461F; --ok:#2E7D5B;
   --map:#DCE1E7; --shadow:0 1px 2px rgba(15,26,42,.08),0 6px 18px rgba(15,26,42,.08);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --bg:#0A0E13; --panel:#121820; --panel-2:#0E141B; --ink:#E5EAF0; --muted:#97A3B3; --faint:#667385;
-    --line:#243041; --accent:#5B9BE6; --accent-soft:#16253A; --alert:#F0703F; --ok:#5FBF92;
+    --line:#243041; --accent:#3D78C2; --accent-soft:#132136; --alert:#F0703F; --ok:#5FBF92;
     --map:#0C1117; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
   }
 }
 :root[data-theme="dark"]{
   --bg:#0A0E13; --panel:#121820; --panel-2:#0E141B; --ink:#E5EAF0; --muted:#97A3B3; --faint:#667385;
-  --line:#243041; --accent:#5B9BE6; --accent-soft:#16253A; --alert:#F0703F; --ok:#5FBF92;
+  --line:#243041; --accent:#3D78C2; --accent-soft:#132136; --alert:#F0703F; --ok:#5FBF92;
   --map:#0C1117; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.35);
 }
 *{box-sizing:border-box}
@@ -1330,7 +1330,7 @@ function probe(ll, silent){
   if(!silent) showTab("field");
   if(!R.dates.some(d => rows.HH[d] !== null)){ $("#probe").innerHTML = T("probe_nodata"); return; }
   lastLL = ll;
-  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:6, color:"#fff", weight:2, fillColor:"#1D5FB0", fillOpacity:1}).addTo(map);
+  if(marker) marker.setLatLng(ll); else marker = L.circleMarker(ll, {radius:6, color:"#fff", weight:2, fillColor:"#14457F", fillOpacity:1}).addTo(map);
   const keys = ["HH","HV","VV","SM","PHASE"].filter(k => rows[k]);
   const name = {HH:"σ⁰ HH, dB", HV:"σ⁰ HV, dB", VV:"σ⁰ VV, dB", SM:T("sm"), PHASE:T("dphi")};
   const f = (k, v) => v === null ? "—" : (k === "SM" ? v.toFixed(2) : (k === "PHASE" && v > 0 ? "+" : "") + v.toFixed(1));
